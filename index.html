@@ -368,9 +368,8 @@
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     /* Footer */
-    footer { padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--gray-400); }
+    footer { padding: 28px 40px; display: flex; justify-content: center; align-items: center; gap: 24px; font-size: 12px; color: var(--gray-400); }
     footer a { color: var(--gray-400); text-decoration: none; }
-    .footer-links { display: flex; gap: 20px; }
 
     /* ══ ADMIN ══ */
     #screen-admin { background:#f5f4f2; min-height:100vh; padding-bottom:60px; }
@@ -557,10 +556,7 @@
 
   <footer>
     <span>© 2026 Oldlace Beauty</span>
-    <div class="footer-links">
-      <a href="https://maps.google.com/?q=%E9%AB%98%E9%9B%84%E5%B8%82%E6%A5%A0%E6%A2%93%E5%8D%80%E5%A4%A7%E5%AD%B8%E5%8D%81%E5%85%AB%E8%A1%97118%E8%99%9F" target="_blank">📍 高雄市楠梓區大學十八街118號</a>
-      <a href="#">Instagram</a>
-    </div>
+    <a href="https://www.instagram.com/oldlace.beauty/" target="_blank">Instagram</a>
   </footer>
 </div>
 
@@ -836,6 +832,9 @@ const NOTICES_DEFAULT = {
         "定金保留期限 3 個月，超過視同放棄，恕不另行提醒",
         "當日遲到超過 15 分鐘視同改期",
         "工作室僅限預約本人入內，恕不開放陪同"
+      ]},
+      { heading: "工作室地址", items: [
+        "高雄市楠梓區大學十八街118號（居家工作室，確認預約後告知樓層，抵達大樓前請先傳 LINE 告知）"
       ]}
     ]
   },
