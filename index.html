@@ -3,7 +3,7 @@
 <html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oldlace Beauty · 預約測試版</title>
+  <title>Oldlace Beauty · 線上預約</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -26,14 +26,6 @@
       font-size: 15px; line-height: 1.6;
       -webkit-tap-highlight-color: transparent;
     }
-
-    /* ── DEMO BANNER ── */
-    .demo-banner {
-      background: #fff3cd; border-bottom: 1px solid #ffc107;
-      padding: 8px 24px; font-size: 12px; color: #7a5f00;
-      display: flex; align-items: center; gap: 8px; justify-content: center;
-    }
-    .demo-dot { width: 7px; height: 7px; border-radius: 50%; background: #ffc107; flex-shrink: 0; }
 
     /* ── SCREENS ── */
     .screen { display: none; }
@@ -135,6 +127,8 @@
       .notice-links { grid-template-columns: 1fr; gap: 8px; }
       /* 後台 開放日設定 自動換行 */
       #atab-slots .admin-card > div { flex-wrap: wrap; row-gap: 8px; }
+      /* 後台圖片單欄 */
+      #admin-images-list { grid-template-columns: 1fr; }
     }
 
     /* LINE Login */
@@ -423,12 +417,13 @@
     .mode-btn.active { border-color:#c9a96e; background:#fffbf5; color:#c9a96e; font-weight:600; }
     .legend-row { display:flex; gap:14px; font-size:11px; color:#aaa; margin:10px 0 6px; }
     /* 圖片 */
-    .img-preview { width:100%; height:140px; object-fit:cover; object-position:center; border-radius:8px; margin-bottom:10px; display:block; }
+    #admin-images-list { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    .img-drag-wrap { position:relative; width:100%; height:200px; overflow:hidden; border-radius:8px; background:#ede9e3; cursor:grab; margin-bottom:10px; user-select:none; -webkit-user-select:none; touch-action:none; }
+    .img-drag-wrap.dragging { cursor:grabbing; }
+    .img-preview { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; }
+    .img-drag-hint { position:absolute; bottom:6px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.45); color:#fff; font-size:10px; padding:3px 9px; border-radius:20px; pointer-events:none; white-space:nowrap; opacity:1; transition:opacity .3s; }
+    .img-drag-wrap.dragging .img-drag-hint { opacity:0; }
     .img-upload-btn { display:block; width:100%; padding:10px; border:1.5px dashed #c9a96e; border-radius:8px; background:#fffbf5; color:#c9a96e; font-size:13px; text-align:center; cursor:pointer; }
-    .pos-slider-row { display:flex; align-items:center; gap:10px; margin-top:8px; }
-    .pos-label { font-size:12px; color:#888; width:28px; flex-shrink:0; }
-    .pos-val { font-size:12px; color:#555; width:32px; text-align:right; flex-shrink:0; }
-    .pos-slider-row input[type=range] { accent-color:#c9a96e; }
     /* Admin modal */
     .admin-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9998; align-items:center; justify-content:center; }
     .admin-modal.show { display:flex; }
@@ -444,11 +439,6 @@
 </head>
 <body>
 
-<!-- DEMO BANNER -->
-<div class="demo-banner">
-  <div class="demo-dot"></div>
-  Oldlace Beauty · 線上預約系統 — 選好時段後透過 LINE 完成預約
-</div>
 
 <!-- ════════════════════════════════════════
      SCREEN 1: 預約表單
@@ -1270,38 +1260,76 @@ function buildAdminImages() {
   const list = document.getElementById("admin-images-list");
   list.innerHTML = SERVICES.map((svc, i) => {
     const pos = PHOTO_POSITIONS[i] || {x:50, y:50};
+    const photoSrc = svc.photos && svc.photos[0] ? svc.photos[0] : '';
     return `
-    <div class="admin-card">
-      <h3>${svc.name}</h3>
-      <img class="img-preview" id="img-preview-${i}" src="${svc.photos[0]}" alt="${svc.name}" style="object-position:${pos.x}% ${pos.y}%">
-      <label class="img-upload-btn" style="margin-bottom:14px;">
-        📷 更換照片
+    <div class="admin-card" style="padding:14px 12px;">
+      <h3 style="margin-bottom:8px;">${svc.name}</h3>
+      <div class="img-drag-wrap" id="img-wrap-${i}"
+           onmousedown="startImgDrag(event,${i})"
+           ontouchstart="startImgDrag(event,${i})">
+        <img class="img-preview" id="img-preview-${i}" src="${photoSrc}" alt="${svc.name}" style="object-position:${pos.x}% ${pos.y}%">
+        <div class="img-drag-hint">拖移調整焦點</div>
+      </div>
+      <label class="img-upload-btn" style="margin-top:0;">
+        更換照片
         <input type="file" accept="image/*" style="display:none" onchange="handleImageUpload(${i}, this)">
       </label>
-      <div class="pos-slider-row">
-        <span class="pos-label">水平</span>
-        <input type="range" min="0" max="100" value="${pos.x}" oninput="updatePos(${i},'x',this.value)" style="flex:1;">
-        <span class="pos-val" id="pos-x-val-${i}">${pos.x}%</span>
-      </div>
-      <div class="pos-slider-row">
-        <span class="pos-label">垂直</span>
-        <input type="range" min="0" max="100" value="${pos.y}" oninput="updatePos(${i},'y',this.value)" style="flex:1;">
-        <span class="pos-val" id="pos-y-val-${i}">${pos.y}%</span>
-      </div>
+      <button class="admin-save" id="img-save-btn-${i}" style="margin-top:8px;" onclick="saveImgSettings(${i})">儲存</button>
     </div>`;
   }).join("");
 }
 
-function updatePos(si, axis, val) {
-  PHOTO_POSITIONS[si][axis] = parseInt(val);
-  document.getElementById(`pos-${axis}-val-${si}`).textContent = val + "%";
-  // 即時更新後台預覽
-  const preview = document.getElementById(`img-preview-${si}`);
-  if (preview) preview.style.objectPosition = `${PHOTO_POSITIONS[si].x}% ${PHOTO_POSITIONS[si].y}%`;
-  // 更新前台卡片
-  buildCards();
-  // 存檔
+function saveImgSettings(si) {
   try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS)); } catch(e) {}
+  const photos = SERVICES.map(s => s.photos && s.photos[0] ? s.photos[0] : null);
+  try { localStorage.setItem("ol_photos", JSON.stringify(photos)); } catch(e) {}
+  buildCards();
+  const btn = document.getElementById(`img-save-btn-${si}`);
+  if (btn) { btn.textContent = "✓ 已儲存"; setTimeout(() => btn.textContent = "儲存", 1500); }
+}
+
+// ── 拖移調整圖片焦點 ──
+let _imgDrag = null;
+function startImgDrag(e, si) {
+  e.preventDefault();
+  const isTch = e.touches;
+  const sx = isTch ? e.touches[0].clientX : e.clientX;
+  const sy = isTch ? e.touches[0].clientY : e.clientY;
+  const wrap = document.getElementById(`img-wrap-${si}`);
+  _imgDrag = { si, sx, sy, px: PHOTO_POSITIONS[si].x, py: PHOTO_POSITIONS[si].y,
+               W: wrap.offsetWidth, H: wrap.offsetHeight };
+  wrap.classList.add("dragging");
+  document.addEventListener("mousemove", onImgDrag);
+  document.addEventListener("touchmove", onImgDrag, { passive: false });
+  document.addEventListener("mouseup", endImgDrag);
+  document.addEventListener("touchend", endImgDrag);
+}
+function onImgDrag(e) {
+  if (!_imgDrag) return;
+  e.preventDefault();
+  const isTch = e.touches;
+  const cx = isTch ? e.touches[0].clientX : e.clientX;
+  const cy = isTch ? e.touches[0].clientY : e.clientY;
+  const { si, sx, sy, px, py, W, H } = _imgDrag;
+  // 拖右 = 往左移動 → x 減少；拖下 = 往上移動 → y 減少
+  const nx = Math.max(0, Math.min(100, Math.round(px - (cx - sx) / W * 100)));
+  const ny = Math.max(0, Math.min(100, Math.round(py - (cy - sy) / H * 100)));
+  PHOTO_POSITIONS[si].x = nx;
+  PHOTO_POSITIONS[si].y = ny;
+  const img = document.getElementById(`img-preview-${si}`);
+  if (img) img.style.objectPosition = `${nx}% ${ny}%`;
+}
+function endImgDrag() {
+  if (!_imgDrag) return;
+  const wrap = document.getElementById(`img-wrap-${_imgDrag.si}`);
+  if (wrap) wrap.classList.remove("dragging");
+  document.removeEventListener("mousemove", onImgDrag);
+  document.removeEventListener("touchmove", onImgDrag);
+  document.removeEventListener("mouseup", endImgDrag);
+  document.removeEventListener("touchend", endImgDrag);
+  buildCards();
+  try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS)); } catch(e) {}
+  _imgDrag = null;
 }
 function handleImageUpload(si, input) {
   const file = input.files[0];
