@@ -127,8 +127,6 @@
       .notice-links { grid-template-columns: 1fr; gap: 8px; }
       /* 後台 開放日設定 自動換行 */
       #atab-slots .admin-card > div { flex-wrap: wrap; row-gap: 8px; }
-      /* 後台圖片單欄 */
-      #admin-images-list { grid-template-columns: 1fr; }
     }
 
     /* LINE Login */
@@ -417,12 +415,13 @@
     .mode-btn.active { border-color:#c9a96e; background:#fffbf5; color:#c9a96e; font-weight:600; }
     .legend-row { display:flex; gap:14px; font-size:11px; color:#aaa; margin:10px 0 6px; }
     /* 圖片 */
-    #admin-images-list { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
-    .img-drag-wrap { position:relative; width:100%; height:200px; overflow:hidden; border-radius:8px; background:#ede9e3; cursor:grab; margin-bottom:10px; user-select:none; -webkit-user-select:none; touch-action:none; }
+    #admin-images-list { display:flex; flex-direction:column; gap:14px; }
+    .img-drag-wrap { position:relative; width:100%; max-width:375px; height:200px; overflow:hidden; border-radius:8px; background:#ede9e3; cursor:grab; margin:0 auto 10px; user-select:none; -webkit-user-select:none; touch-action:none; }
     .img-drag-wrap.dragging { cursor:grabbing; }
     .img-preview { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; }
     .img-drag-hint { position:absolute; bottom:6px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.45); color:#fff; font-size:10px; padding:3px 9px; border-radius:20px; pointer-events:none; white-space:nowrap; opacity:1; transition:opacity .3s; }
     .img-drag-wrap.dragging .img-drag-hint { opacity:0; }
+    .img-mobile-label { font-size:10px; color:#aaa; text-align:center; margin-bottom:8px; }
     .img-upload-btn { display:block; width:100%; padding:10px; border:1.5px dashed #c9a96e; border-radius:8px; background:#fffbf5; color:#c9a96e; font-size:13px; text-align:center; cursor:pointer; }
     /* Admin modal */
     .admin-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:9998; align-items:center; justify-content:center; }
@@ -1270,6 +1269,7 @@ function buildAdminImages() {
         <img class="img-preview" id="img-preview-${i}" src="${photoSrc}" alt="${svc.name}" style="object-position:${pos.x}% ${pos.y}%">
         <div class="img-drag-hint">拖移調整焦點</div>
       </div>
+      <div class="img-mobile-label">↑ 手機顯示效果（375px）</div>
       <label class="img-upload-btn" style="margin-top:0;">
         更換照片
         <input type="file" accept="image/*" style="display:none" onchange="handleImageUpload(${i}, this)">
