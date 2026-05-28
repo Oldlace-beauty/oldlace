@@ -7,6 +7,19 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>Oldlace Beauty · 線上預約</title>
+  <script>
+    (function(){
+      var VER = '20260528v3';
+      var stored = sessionStorage.getItem('ol_ver');
+      if (stored && stored !== VER) {
+        sessionStorage.setItem('ol_ver', VER);
+        var clean = location.href.split('?')[0];
+        location.replace(clean + '?v=' + VER);
+      } else {
+        sessionStorage.setItem('ol_ver', VER);
+      }
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
