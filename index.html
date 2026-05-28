@@ -998,25 +998,12 @@ const ALL_SLOTS = ["13:00","14:00","15:00","16:00","17:00"];
 let adminLogoClicks = 0;
 let adminLoggedIn = false;
 
-// Load overrides：優先套用 BAKED_SETTINGS（匯出版），其次 localStorage（本機後台）
+// Load overrides：localStorage 優先（電腦後台），無資料時才用 BAKED_SETTINGS（手機同步用）
 function loadStorageOverrides() {
   try {
-    // ── BAKED_SETTINGS（上傳到 Netlify 的版本）──
-    if (BAKED_SETTINGS) {
-      const b = BAKED_SETTINGS;
-      if (b.services) b.services.forEach((s, i) => {
-        if (!SERVICES[i]) return;
-        if (s.price !== undefined) SERVICES[i].price = s.price;
-        if (s.desc) SERVICES[i].desc = s.desc;
-        if (s.duration) SERVICES[i].duration = s.duration;
-      });
-      if (b.photos) b.photos.forEach((p, i) => { if (SERVICES[i] && p) SERVICES[i].photos = [p]; });
-      if (b.positions) b.positions.forEach((p, i) => { if (PHOTO_POSITIONS[i] && p) PHOTO_POSITIONS[i] = p; });
-      if (b.notices) try { localStorage.setItem("ol_notices", JSON.stringify(b.notices)); } catch(e) {}
-      if (b.openDay) try { localStorage.setItem("ol_open_day", b.openDay); } catch(e) {}
-      return; // BAKED 已套用，跳過 localStorage
-    }
-    // ── localStorage（本機後台修改）──
+    const b = (typeof BAKED_SETTINGS !== "undefined") ? BAKED_SETTINGS : null;
+
+    // ── 服務設定 ──
     const svcData = localStorage.getItem("ol_services");
     if (svcData) {
       const saved = JSON.parse(svcData);
@@ -1026,21 +1013,48 @@ function loadStorageOverrides() {
         if (s.desc) SERVICES[i].desc = s.desc;
         if (s.duration) SERVICES[i].duration = s.duration;
       });
+    } else if (b && b.services) {
+      b.services.forEach((s, i) => {
+        if (!SERVICES[i]) return;
+        if (s.price !== undefined) SERVICES[i].price = s.price;
+        if (s.desc) SERVICES[i].desc = s.desc;
+        if (s.duration) SERVICES[i].duration = s.duration;
+      });
     }
+
+    // ── 照片 ──
     const photoData = localStorage.getItem("ol_photos");
     if (photoData) {
       const saved = JSON.parse(photoData);
       saved.forEach((p, i) => { if (SERVICES[i] && p) SERVICES[i].photos = [p]; });
+    } else if (b && b.photos) {
+      b.photos.forEach((p, i) => { if (SERVICES[i] && p) SERVICES[i].photos = [p]; });
     }
-    const takenData = localStorage.getItem("ol_taken");
-    if (takenData) {
-      const saved = JSON.parse(takenData);
-      Object.keys(saved).forEach(d => { TAKEN_SLOTS[d] = saved[d]; });
-    }
+
+    // ── 圖片位置 ──
     const posData = localStorage.getItem("ol_positions");
     if (posData) {
       const saved = JSON.parse(posData);
       saved.forEach((p, i) => { if (PHOTO_POSITIONS[i] && p) PHOTO_POSITIONS[i] = p; });
+    } else if (b && b.positions) {
+      b.positions.forEach((p, i) => { if (PHOTO_POSITIONS[i] && p) PHOTO_POSITIONS[i] = p; });
+    }
+
+    // ── 須知（只在無 localStorage 時從 BAKED 補入）──
+    if (!localStorage.getItem("ol_notices") && b && b.notices) {
+      try { localStorage.setItem("ol_notices", JSON.stringify(b.notices)); } catch(e) {}
+    }
+
+    // ── 開放日 ──
+    if (!localStorage.getItem("ol_open_day") && b && b.openDay) {
+      try { localStorage.setItem("ol_open_day", b.openDay); } catch(e) {}
+    }
+
+    // ── 已預約時段 ──
+    const takenData = localStorage.getItem("ol_taken");
+    if (takenData) {
+      const saved = JSON.parse(takenData);
+      Object.keys(saved).forEach(d => { TAKEN_SLOTS[d] = saved[d]; });
     }
   } catch(e) {}
 }
