@@ -1154,30 +1154,6 @@ function enterAdmin() {
   showScreen("screen-admin");
 }
 
-function exportSite() {
-  const noticesSaved = (() => { try { return JSON.parse(localStorage.getItem("ol_notices") || "null"); } catch(e) { return null; } })();
-  const settings = {
-    services: SERVICES.map(s => ({ price: s.price, desc: s.desc, duration: s.duration })),
-    photos: SERVICES.map(s => s.photos && s.photos[0] ? s.photos[0] : null),
-    positions: PHOTO_POSITIONS,
-    notices: noticesSaved,
-    openDay: parseInt(localStorage.getItem("ol_open_day") || "5")
-  };
-  const html = document.documentElement.outerHTML;
-  const updated = html.replace(
-    /const BAKED_SETTINGS = (?:null|\{[\s\S]*?\});/,
-    "const BAKED_SETTINGS = " + JSON.stringify(settings) + ";"
-  );
-  const blob = new Blob([updated], { type: "text/html;charset=utf-8" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "預約網站.html";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  showToast("✓ 已下載更新版本，重新上傳到 Netlify 即可");
-}
-
 function saveOpenDay() {
   const val = parseInt(document.getElementById("open-day-input").value);
   if (val >= 1 && val <= 28) {
@@ -1490,7 +1466,6 @@ loadSheetSlots();
     <div class="admin-header">
       <h2>🔧 管理後台</h2>
       <div style="display:flex;gap:8px;">
-        <button class="admin-back" style="background:#c9a96e;color:#fff;border-color:#c9a96e;font-weight:600;" onclick="exportSite()">↓ 匯出更新</button>
         <button class="admin-back" onclick="showScreen('screen-booking')">← 返回</button>
       </div>
     </div>
