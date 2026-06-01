@@ -966,6 +966,7 @@ function saveNoticeSettings() {
     if (el) data[key] = el.value;
   });
   localStorage.setItem("ol_notices", JSON.stringify(data));
+  postToSheet({action:"updateNotices", notices: data});
   const btn = document.querySelector(".admin-save[onclick='saveNoticeSettings()']");
   if (btn) { btn.textContent = "✓ 已儲存"; setTimeout(() => btn.textContent = "💾 儲存注意事項", 1500); }
 }
@@ -1308,6 +1309,7 @@ function saveServiceSettings() {
     return { price, duration: dur, desc };
   });
   try { localStorage.setItem("ol_services", JSON.stringify(saved)); } catch(e) {}
+  postToSheet({action:"updateServices", services: saved});
   // rebuild dropdown + cards
   rebuildServiceDropdown();
   buildCards();
@@ -1426,15 +1428,28 @@ async function loadSheetSlots() {
     const res = await fetch(SCRIPT_URL + "?t=" + Date.now(), {cache:"no-store"});
     if (!res.ok) return;
     const data = await res.json();
-    if (!data.ok || !data.slots) return;
-    // 清空現有資料，以 Sheets 為準（確保手機和桌機都同步）
+    if (!data.slots) return;
+    if (data.notices) {
+      try { localStorage.setItem("ol_notices", JSON.stringify(data.notices)); } catch(e2) {}
+    }
+    if (data.services) {
+      try { localStorage.setItem("ol_services", JSON.stringify(data.services)); } catch(e2) {}
+      data.services.forEach((s, i) => {
+        if (SERVICES[i]) {
+          if (s.price !== undefined) SERVICES[i].price = s.price;
+          if (s.duration !== undefined) SERVICES[i].duration = s.duration;
+          if (s.desc !== undefined) SERVICES[i].desc = s.desc;
+          if (s.deposit !== undefined) SERVICES[i].deposit = s.deposit;
+          if (s.latestHour !== undefined) SERVICES[i].latestHour = s.latestHour;
+        }
+      });
+    }
     Object.keys(TAKEN_SLOTS).forEach(k => delete TAKEN_SLOTS[k]);
     Object.keys(data.slots).forEach(date => {
       if (data.slots[date].length > 0) {
         TAKEN_SLOTS[date] = [...data.slots[date]];
       }
     });
-    // 同步寫回 localStorage，讓下次離線也能用最新資料
     try { localStorage.setItem("ol_taken", JSON.stringify(TAKEN_SLOTS)); } catch(e) {}
     renderTimeSlots();
     const wg = document.getElementById("week-grid");
@@ -1445,7 +1460,6 @@ async function loadSheetSlots() {
   }
 }
 
-// 寫入 Apps Script
 async function postToSheet(payload) {
   try {
     await fetch(SCRIPT_URL, {
