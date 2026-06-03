@@ -480,7 +480,7 @@
         <hr class="price-divider">
         <ul class="price-features"><li>眉型設計諮詢</li><li>色號調配</li><li>術後保養包</li><li>兩個月內一次免費調整</li></ul>
         
-        <div class="select-service-btn"><button onclick="selectService(0)">選擇此服務</button></div>
+        <div class="select-service-btn"><button onclick="selectService(0)">選擇時段</button></div>
       </div></div><div class="price-card card-busei">
       
       <div class="card-gallery" id="gal-1" data-idx="0" data-count="1">
@@ -494,7 +494,7 @@
         <hr class="price-divider">
         <ul class="price-features"><li>限本店顧客預約</li><li>一年內有效</li></ul>
         <p class="price-warning">⚠ 他家眉毛需預約輕透感霧眉，本店無單獨補色服務</p>
-        <div class="select-service-btn"><button onclick="selectService(1)">選擇此服務</button></div>
+        <div class="select-service-btn"><button onclick="selectService(1)">選擇時段</button></div>
       </div></div><div class="price-card card-danse">
       
       <div class="card-gallery" id="gal-2" data-idx="0" data-count="1">
@@ -508,7 +508,7 @@
         <hr class="price-divider">
         <ul class="price-features"><li>單次計費</li><li>可多次施作至理想效果</li></ul>
         
-        <div class="select-service-btn"><button onclick="selectService(2)">選擇此服務</button></div>
+        <div class="select-service-btn"><button onclick="selectService(2)">選擇時段</button></div>
       </div></div><div class="price-card card-jyodoko">
       
       <div class="card-gallery" id="gal-3" data-idx="0" data-count="1">
@@ -522,7 +522,7 @@
         <hr class="price-divider">
         <ul class="price-features"><li>完整除色</li><li>含術後評估</li></ul>
         
-        <div class="select-service-btn"><button onclick="selectService(3)">選擇此服務</button></div>
+        <div class="select-service-btn"><button onclick="selectService(3)">選擇時段</button></div>
       </div></div></div>
   </section>
 
@@ -684,7 +684,7 @@ function buildCards() {
         <hr class="price-divider">
         <ul class="price-features">${features}</ul>
         ${warning}
-        <div class="select-service-btn"><button onclick="selectService(${si})">選擇此服務</button></div>
+        <div class="select-service-btn"><button onclick="selectService(${si})">選擇時段</button></div>
       </div>`;
     grid.appendChild(card);
     initGallery(si, svc.photos.length);
