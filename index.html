@@ -1388,6 +1388,7 @@ function handleImageUpload(si, input) {
     // save photos to localStorage
     const photos = SERVICES.map(s => s.photos[0]);
     try { localStorage.setItem("ol_photos", JSON.stringify(photos)); } catch(e) {}
+    try{const _ph=JSON.parse(localStorage.getItem("ol_photos")||"{}");fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify({action:"updatePhotos",photos:_ph})});}catch(ef){}
     buildCards();
     showToast("✓ 圖片已更換");
   };
@@ -1427,6 +1428,7 @@ async function loadSheetSlots() {
       }
     });
     try { localStorage.setItem("ol_taken", JSON.stringify(TAKEN_SLOTS)); } catch(e) {}
+    try{if(data.photos&&typeof data.photos==='object'){localStorage.setItem("ol_photos",JSON.stringify(data.photos));buildCards();}}catch(ep){}
     renderTimeSlots();
     const wg = document.getElementById("week-grid");
     if (wg && wg.innerHTML) renderWeekGrid();
