@@ -1428,7 +1428,7 @@ async function loadSheetSlots() {
       }
     });
     try { localStorage.setItem("ol_taken", JSON.stringify(TAKEN_SLOTS)); } catch(e) {}
-    try{if(data.photos&&typeof data.photos==='object'){localStorage.setItem("ol_photos",JSON.stringify(data.photos));buildCards();}}catch(ep){}
+    try{if(data.photos&&typeof data.photos==='object'){localStorage.setItem("ol_photos",JSON.stringify(data.photos));}}catch(ep){}
     renderTimeSlots();
     const wg = document.getElementById("week-grid");
     if (wg && wg.innerHTML) renderWeekGrid();
