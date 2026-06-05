@@ -1316,7 +1316,8 @@ function buildAdminImages() {
 }
 
 function saveImgSettings(si) {
-  try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS)); } catch(e) {}
+  try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS));
+  postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS}); } catch(e) {}
   const photos = SERVICES.map(s => s.photos && s.photos[0] ? s.photos[0] : null);
   try { localStorage.setItem("ol_photos", JSON.stringify(photos)); } catch(e) {}
   buildCards();
@@ -1364,7 +1365,8 @@ function endImgDrag() {
   document.removeEventListener("mouseup", endImgDrag);
   document.removeEventListener("touchend", endImgDrag);
   buildCards();
-  try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS)); } catch(e) {}
+  try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS));
+  postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS}); } catch(e) {}
   _imgDrag = null;
 }
 function handleImageUpload(si, input) {
