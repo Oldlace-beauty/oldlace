@@ -623,7 +623,7 @@ const BAKED_SETTINGS = {"photos": ["https://lh3.googleusercontent.com/d/1LDa5Ema
 
 /* ── PHOTO POSITIONS ── */
 // x = 水平 (0=左 50=中 100=右), y = 垂直 (0=上 50=中 100=下)
-const POS_DEFAULT = [{x:50,y:10},{x:50,y:50},{x:50,y:15},{x:50,y:60}];
+const POS_DEFAULT = [{x:49,y:46},{x:49,y:15},{x:50,y:15},{x:50,y:60}];
 let PHOTO_POSITIONS = POS_DEFAULT.map(p => ({...p}));
 
 /* ── SERVICES ── */
@@ -1318,6 +1318,7 @@ function buildAdminImages() {
 function saveImgSettings(si) {
   try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS));
   postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS});
+  postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS});
   postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS}); } catch(e) {}
   const photos = SERVICES.map(s => s.photos && s.photos[0] ? s.photos[0] : null);
   try { localStorage.setItem("ol_photos", JSON.stringify(photos)); } catch(e) {}
@@ -1367,6 +1368,7 @@ function endImgDrag() {
   document.removeEventListener("touchend", endImgDrag);
   buildCards();
   try { localStorage.setItem("ol_positions", JSON.stringify(PHOTO_POSITIONS));
+  postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS});
   postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS});
   postToSheet({action:"updatePositions", positions:PHOTO_POSITIONS}); } catch(e) {}
   _imgDrag = null;
