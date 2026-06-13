@@ -114,3 +114,17 @@ footer small{display:block;margin-top:14px;color:#8b827670;color:#928a7e}
 
 .center{text-align:center}
 .divider{height:1px;background:var(--line);margin:6px 0}
+
+/* 痛點卡片組 */
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.pain-card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 14px rgba(43,39,35,.08);display:flex;flex-direction:column}
+.pain-card-text{padding:26px 22px 20px;flex:1}
+.pain-tag{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.pain-lines{font-size:14px;line-height:2.2;color:var(--ink)}
+.pain-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;flex-shrink:0}
+@media(max-width:600px){
+  .pain-grid{grid-template-columns:1fr;gap:12px}
+  .pain-card{flex-direction:row;border-radius:14px}
+  .pain-card-text{padding:20px 18px}
+  .pain-card img{width:38%;aspect-ratio:3/4;object-fit:cover;order:2}
+}
