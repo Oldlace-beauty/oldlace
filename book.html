@@ -63,6 +63,15 @@
       border: none; padding: 9px 20px; border-radius: var(--radius-sm);
       font-size: 13px; cursor: pointer; text-decoration: none;
     }
+    .book-hamburger { display:none; border:0; background:none; font-size:24px; cursor:pointer;
+      padding:6px; min-width:44px; min-height:44px; align-items:center; justify-content:center; color:var(--black); }
+    .book-mobile-menu { position:fixed; inset:60px 0 auto 0; background:#fff;
+      border-bottom:1px solid var(--gray-200); transform:translateY(-130%);
+      transition:transform .28s ease; z-index:99; }
+    .book-mobile-menu.open { transform:translateY(0); }
+    .book-mobile-menu a { display:block; padding:16px 24px; text-decoration:none;
+      border-top:1px solid var(--gray-200); font-size:16px; color:var(--black); }
+    .book-mobile-menu a.bm-active { color:#06c755; font-weight:600; }
 
     /* ── HERO ── */
     .hero { padding: 80px 40px 60px; max-width: 680px; border-bottom: 1px solid var(--gray-200); }
@@ -127,6 +136,8 @@
       .booking-grid { grid-template-columns: 1fr; }
       nav { padding: 0 20px; }
       .nav-links { display: none; }
+      .nav-book { display: none; }
+      .book-hamburger { display: flex; }
       .hero, section { padding: 48px 20px; }
       /* Hero 按鈕 */
       .hero-btns { flex-wrap: wrap; }
@@ -462,11 +473,21 @@
   <nav>
     <div class="logo" onclick="onLogoClick()" style="cursor:pointer">Oldlace Beauty</div>
     <div class="nav-links">
-      <a href="#services">服務</a>
-      <a href="#booking">預約</a>
+      <a href="index.html">首頁</a>
+      <a href="services.html">服務與價目</a>
+      <a href="faq.html">常見問題</a>
+      <a href="policy.html">預約須知</a>
     </div>
     <a class="nav-book" href="#booking">立即預約</a>
+    <button class="book-hamburger" aria-label="選單" onclick="document.getElementById('book-nav').classList.toggle('open')">☰</button>
   </nav>
+  <div class="book-mobile-menu" id="book-nav">
+    <a href="index.html">首頁</a>
+    <a href="services.html">服務與價目</a>
+    <a href="faq.html">常見問題</a>
+    <a href="policy.html">預約須知</a>
+    <a href="book.html" class="bm-active">線上預約</a>
+  </div>
 
   <div class="hero">
     <div class="hero-tag">線上預約系統</div>
@@ -1553,6 +1574,13 @@ loadSheetSlots();
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('click',function(e){
+  var m=document.getElementById('book-nav');
+  if(m&&m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.book-hamburger'))m.classList.remove('open');
+});
+</script>
 
 <!-- Notice Modal -->
 <div class="notice-modal" id="notice-modal" onclick="closeNotice(event)">
