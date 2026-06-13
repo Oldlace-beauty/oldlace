@@ -418,8 +418,8 @@
     .wg-day-hd.today .wg-day-date { color:#c9a96e; }
     .wg-dayoff { font-size:9px; background:#f0f0f0; border:none; border-radius:4px; padding:2px 5px; cursor:pointer; color:#888; margin-top:1px; }
     .wg-dayoff:active { background:#fde8e8; color:#c44; }
-    .wg-time-lbl { color:#bbb; font-size:10px; justify-content:flex-end; padding-right:3px; height:30px; }
-    .wg-slot { cursor:pointer; height:30px; border:1px solid #eee; border-radius:5px; transition:.1s; font-size:11px; font-weight:600; }
+    .wg-time-lbl { color:#bbb; font-size:10px; justify-content:flex-end; padding-right:3px; height:44px; }
+    .wg-slot { cursor:pointer; height:44px; border:1px solid #eee; border-radius:5px; transition:.1s; font-size:11px; font-weight:600; }
     .wg-slot.av { background:#f6faf6; }
     .wg-slot.av:active { background:#d4ead4; }
     .wg-slot.tk { background:#fde8e8; color:#c44; border-color:#f0c0c0; }
@@ -1151,13 +1151,36 @@ function showAdminTab(tab) {
 }
 
 // ── 時段管理：週視圖 ──
-let slotMode = 1;
 let weekOffset = 0;
+let pendingSlot = null;
 
-function setSlotMode(h, btn) {
-  slotMode = h;
-  document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+function showSlotPicker(date, time) {
+  pendingSlot = {date, time};
+  const parts = date.split("-");
+  document.getElementById("slot-picker-title").textContent = `${parseInt(parts[1])}/${parseInt(parts[2])} ${time}`;
+  document.getElementById("slot-picker").style.display = "flex";
+}
+function hideSlotPicker() {
+  pendingSlot = null;
+  document.getElementById("slot-picker").style.display = "none";
+}
+function confirmSlotBook(hours) {
+  if (!pendingSlot) return;
+  const {date, time} = pendingSlot;
+  if (!TAKEN_SLOTS[date]) TAKEN_SLOTS[date] = [];
+  const startH = parseInt(time);
+  const toAdd = [];
+  for (let h = 0; h < hours; h++) {
+    const slotH = startH + h;
+    if (slotH > 17) break;
+    const t = `${String(slotH).padStart(2,"0")}:00`;
+    if (!TAKEN_SLOTS[date].includes(t)) { TAKEN_SLOTS[date].push(t); toAdd.push([date, t]); }
+  }
+  if (toAdd.length) postToSheet({action:"add_bulk", slots:toAdd});
+  try { localStorage.setItem("ol_taken", JSON.stringify(TAKEN_SLOTS)); } catch(e) {}
+  hideSlotPicker();
+  renderWeekGrid();
+  showToast("✓ 時段已鎖定");
 }
 function changeWeek(dir) { weekOffset += dir; renderWeekGrid(); }
 
@@ -1209,20 +1232,12 @@ function toggleWeekSlot(date, time) {
     TAKEN_SLOTS[date] = TAKEN_SLOTS[date].filter(t => t !== time);
     if (TAKEN_SLOTS[date].length === 0) delete TAKEN_SLOTS[date];
     postToSheet({action:"remove", date, time});
+    try { localStorage.setItem("ol_taken", JSON.stringify(TAKEN_SLOTS)); } catch(e) {}
+    renderWeekGrid();
+    showToast("✓ 時段已開放");
   } else {
-    const startH = parseInt(time);
-    const toAdd = [];
-    for (let h = 0; h < slotMode; h++) {
-      const slotH = startH + h;
-      if (slotH > 17) break;
-      const t = `${String(slotH).padStart(2,"0")}:00`;
-      if (!TAKEN_SLOTS[date].includes(t)) { TAKEN_SLOTS[date].push(t); toAdd.push([date, t]); }
-    }
-    if (toAdd.length) postToSheet({action:"add_bulk", slots:toAdd});
+    showSlotPicker(date, time);
   }
-  try { localStorage.setItem("ol_taken", JSON.stringify(TAKEN_SLOTS)); } catch(e) {}
-  renderWeekGrid();
-  showToast(isTaken ? "✓ 時段已開放" : "✓ 時段已鎖定");
 }
 
 function markDayOff(date) {
@@ -1481,15 +1496,9 @@ loadSheetSlots();
           <button onclick="saveOpenDay()" style="background:#c9a96e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-weight:600;">儲存</button>
         </div>
       </div>
-      <div class="admin-card">
-        <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:6px;">標記服務（決定封鎖時數）</div>
-        <div class="mode-row">
-          <button class="mode-btn active" onclick="setSlotMode(1,this)">單格 1h</button>
-          <button class="mode-btn" onclick="setSlotMode(4,this)">霧眉 4h</button>
-          <button class="mode-btn" onclick="setSlotMode(3,this)">補色 3h</button>
-        </div>
-        <div class="legend-row">
-          <span>🔴 已預約</span><span>🟢 可預約</span><span>「休」= 整天封鎖</span>
+      <div class="admin-card" style="padding:10px 14px;">
+        <div class="legend-row" style="margin:0;">
+          <span>🔴 已預約（點擊解除）</span><span>🟢 可預約（點擊鎖定）</span><span>「休」= 整天封鎖</span>
         </div>
       </div>
       <div class="admin-card" style="padding:12px 10px;">
@@ -1529,6 +1538,19 @@ loadSheetSlots();
       <div id="admin-images-list"></div>
     </div>
 
+  </div>
+</div>
+
+<!-- 服務選擇彈窗 -->
+<div id="slot-picker" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center;" onclick="if(event.target===this)hideSlotPicker()">
+  <div style="background:#fff;border-radius:18px;padding:22px 20px;width:260px;text-align:center;box-shadow:0 12px 32px rgba(0,0,0,.18);">
+    <div id="slot-picker-title" style="font-size:15px;font-weight:600;color:#333;margin-bottom:4px;"></div>
+    <div style="font-size:12px;color:#aaa;margin-bottom:18px;">選擇要鎖定的服務</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button onclick="confirmSlotBook(4)" style="background:#c9a96e;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;">霧眉 &nbsp;4 小時</button>
+      <button onclick="confirmSlotBook(3)" style="background:#6b8e6b;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;">補色 &nbsp;3 小時</button>
+      <button onclick="hideSlotPicker()" style="background:#f5f5f3;color:#888;border:none;border-radius:12px;padding:12px;font-size:13px;cursor:pointer;">取消</button>
+    </div>
   </div>
 </div>
 
