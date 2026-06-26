@@ -18,19 +18,18 @@
 </head>
 <body>
 
-<header class="nav">
-  <div class="nav-in">
-    <a class="brand" href="index.html">Oldlace<small>BEAUTY</small></a>
-    <button class="menu-btn" aria-label="選單" onclick="document.getElementById('m').classList.toggle('open')">☰</button>
-    <nav class="menu" id="m">
-      <a href="index.html">首頁</a>
-      <a href="services.html">服務與價目</a>
-      <a href="faq.html">常見問題</a>
-      <a href="policy.html">預約須知</a>
-      <a class="cta" href="book.html">線上預約</a>
-    </nav>
-  </div>
-</header>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-main">Oldlace</span>
+    <span class="nav-logo-sub">Beauty Studio</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="services.html">服務與價目</a></li>
+    <li><a href="faq.html">常見問題</a></li>
+    <li><a href="policy.html">預約須知</a></li>
+  </ul>
+  <a href="book.html" class="nav-book">線上預約 →</a>
+</nav>
 
 <section>
   <div class="wrap">
@@ -95,24 +94,13 @@
 </section>
 
 <footer>
-  <div class="wrap">
-    <div class="serif" style="font-size:16px;letter-spacing:.2em">OLDLACE BEAUTY</div>
-    <div class="f-links">
-      <a href="services.html">服務</a>
-      <a href="faq.html">常見問題</a>
-      <a href="policy.html">預約須知</a>
-      <a href="book.html">預約</a>
-    </div>
-    <a class="btn btn-line" style="max-width:280px;margin:0 auto" href="https://line.me/R/ti/p/@oldlace">加入官方 LINE</a>
-    <small>© Oldlace Beauty・高雄・自然霧眉與霧眉教學</small>
-  </div>
+  <div class="footer-brand">Oldlace Beauty</div>
+  <ul class="footer-nav">
+    <li><a href="services.html">服務</a></li>
+    <li><a href="faq.html">常見問題</a></li>
+    <li><a href="policy.html">預約須知</a></li>
+    <li><a href="https://line.me/R/ti/p/@oldlace">加入 LINE</a></li>
+  </ul>
 </footer>
-
-<script>
-document.addEventListener('click',function(e){
-  var m=document.getElementById('m');
-  if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.menu-btn'))m.classList.remove('open');
-});
-</script>
 </body>
 </html>
