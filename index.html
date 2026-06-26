@@ -1,171 +1,698 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oldlace Beauty 輕透感霧眉｜高雄自然霧眉、霧眉教學</title>
-<meta name="description" content="Oldlace Beauty 輕透感霧眉，做出像天生一樣自然的眉毛。全程輕透手法、修復期短、不易結痂。線上即時選時段預約，價格與須知一頁看懂。">
-<link rel="canonical" href="https://oldlace.tw/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Oldlace Beauty 輕透感霧眉｜自然、好修復、線上預約">
-<meta property="og:description" content="素顏也有自然好看的眉毛。輕透手法、修復期短，線上即時選時段。">
-<meta property="og:image" content="https://oldlace.tw/assets/hero.jpg">
-<meta property="og:url" content="https://oldlace.tw/">
-<meta name="format-detection" content="telephone=no">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"HealthAndBeautyBusiness","name":"Oldlace Beauty","description":"輕透感霧眉、自然霧眉與霧眉教學","image":"https://oldlace.tw/assets/hero.jpg","url":"https://oldlace.tw/","priceRange":"$$","areaServed":"高雄"}
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oldlace Beauty 輕透感霧眉｜高雄自然霧眉</title>
+  <meta name="description" content="Oldlace Beauty 輕透感霧眉，做出像天生一樣自然的眉毛。全程輕透手法、修復期短、不易結痂。線上即時選時段預約，價格與須知一頁看懂。">
+  <link rel="canonical" href="https://oldlace.tw/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Oldlace Beauty 輕透感霧眉｜高雄自然霧眉">
+  <meta property="og:description" content="素顏也有自然好看的眉毛。輕透手法、修復期短，線上即時選時段。">
+  <meta property="og:image" content="https://oldlace.tw/assets/home-cover.jpeg">
+  <meta property="og:url" content="https://oldlace.tw/">
+  <meta name="format-detection" content="telephone=no">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"HealthAndBeautyBusiness","name":"Oldlace Beauty","description":"輕透感霧眉、自然霧眉","image":"https://oldlace.tw/assets/home-cover.jpeg","url":"https://oldlace.tw/","priceRange":"$$","areaServed":"高雄"}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Tokens ── */
+    :root {
+      --bg:      #F8F7F5;
+      --text:    #1C1A17;
+      --muted:   #9C9890;
+      --border:  #E4E2DC;
+      --dark:    #2A2720;
+      --white:   #FEFEFE;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Serif TC', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.9;
+      -webkit-font-smoothing: antialiased;
+    }
+
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo-main {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .nav-logo-sub {
+      display: block;
+      font-size: 0.58rem;
+      letter-spacing: 0.38em;
+      color: var(--muted);
+      margin-top: 0.12rem;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.4rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--muted); }
+
+    .nav-book {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--text);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+
+    .nav-book:hover { opacity: 0.45; }
+
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 4.5rem 3rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: #2E2C28;
+      background-image: url('assets/hero.jpg');
+      background-size: cover;
+      background-position: center 30%;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(20, 18, 14, 0.60) 0%,
+        rgba(20, 18, 14, 0.10) 55%,
+        transparent 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--white);
+      letter-spacing: 0.06em;
+    }
+
+    .hero-desc {
+      margin-top: 1.4rem;
+      font-size: 0.84rem;
+      color: rgba(255,255,255,0.58);
+      letter-spacing: 0.1em;
+    }
+
+    .hero-link {
+      display: inline-block;
+      margin-top: 2.8rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.45);
+      padding-bottom: 2px;
+      transition: border-color 0.25s;
+    }
+
+    .hero-link:hover { border-color: var(--white); }
+
+
+    /* ══════════════════════════════════════
+       STATEMENT
+    ══════════════════════════════════════ */
+    .statement {
+      padding: 9rem 3rem;
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+
+    .statement-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 2.2rem;
+    }
+
+    .statement-divider {
+      width: 32px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto 2.2rem;
+    }
+
+    .statement-zh {
+      font-size: 0.88rem;
+      line-height: 2.2;
+      color: var(--text);
+      letter-spacing: 0.08em;
+    }
+
+
+    /* ══════════════════════════════════════
+       WORKS
+    ══════════════════════════════════════ */
+    .works {
+      padding: 0 3rem 8rem;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .works-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .works-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+
+    .works-caption {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .work-item {
+      overflow: hidden;
+      background: #C8C4BE;
+    }
+
+    .work-item.portrait { aspect-ratio: 3 / 4; }
+    .work-item.square   { aspect-ratio: 1 / 1; }
+
+    .work-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+
+    .work-item:hover img { transform: scale(1.04); }
+
+
+    /* ══════════════════════════════════════
+       WHY OLDLACE
+    ══════════════════════════════════════ */
+    .pillars {
+      padding: 7rem 3rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.32em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 3.5rem;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4rem;
+    }
+
+    .pillar-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 1.6rem;
+    }
+
+    .pillar-name {
+      font-size: 0.92rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.8rem;
+    }
+
+    .pillar-body {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.95;
+    }
+
+
+    /* ══════════════════════════════════════
+       VOICES
+    ══════════════════════════════════════ */
+    .voices {
+      padding: 9rem 3rem;
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      line-height: 0.6;
+      color: var(--border);
+      display: block;
+      margin-bottom: 1.8rem;
+    }
+
+    .quote-text {
+      font-size: 0.93rem;
+      line-height: 2.1;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+    }
+
+    .quote-source {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .voice-sep {
+      width: 1px;
+      height: 3.5rem;
+      background: var(--border);
+      margin: 3.5rem auto;
+    }
+
+
+    /* ══════════════════════════════════════
+       CTA
+    ══════════════════════════════════════ */
+    .cta {
+      padding: 9rem 3rem;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .cta-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 3rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-dark {
+      display: inline-block;
+      padding: 0.95rem 2.6rem;
+      background: var(--dark);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      transition: opacity 0.2s;
+    }
+
+    .btn-dark:hover { opacity: 0.72; }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 0.95rem 2.6rem;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      transition: border-color 0.2s;
+    }
+
+    .btn-outline:hover { border-color: var(--text); }
+
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .footer-nav a {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover { color: var(--text); }
+
+
+    /* ══════════════════════════════════════
+       FADE-IN ANIMATION
+    ══════════════════════════════════════ */
+    .fade {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .works-grid .work-item:nth-child(1) { transition-delay: 0s; }
+    .works-grid .work-item:nth-child(2) { transition-delay: 0.08s; }
+    .works-grid .work-item:nth-child(3) { transition-delay: 0.16s; }
+    .works-grid .work-item:nth-child(4) { transition-delay: 0.24s; }
+    .works-grid .work-item:nth-child(5) { transition-delay: 0.32s; }
+    .works-grid .work-item:nth-child(6) { transition-delay: 0.40s; }
+
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+
+      .hero { padding: 3rem 1.5rem; }
+
+      .statement,
+      .pillars,
+      .voices,
+      .cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+      .works { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+      .works-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .pillars-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header class="nav">
-  <div class="nav-in">
-    <a class="brand" href="index.html">Oldlace<small>BEAUTY</small></a>
-    <button class="menu-btn" aria-label="選單" onclick="document.getElementById('m').classList.toggle('open')">☰</button>
-    <nav class="menu" id="m">
-      <a href="index.html">首頁</a>
-      <a href="services.html">服務與價目</a>
-      <a href="faq.html">常見問題</a>
-      <a href="policy.html">預約須知</a>
-      <a class="cta" href="book.html">線上預約</a>
-    </nav>
-  </div>
-</header>
+  <!-- ══ NAV ══ -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-main">Oldlace</span>
+      <span class="nav-logo-sub">Beauty Studio</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="services.html">服務與價目</a></li>
+      <li><a href="faq.html">常見問題</a></li>
+      <li><a href="policy.html">預約須知</a></li>
+    </ul>
+    <a href="book.html" class="nav-book">線上預約 →</a>
+  </nav>
 
-<div class="hero">
-  <img src="assets/hero.jpg" alt="Oldlace Beauty 輕透感霧眉作品">
-  <div class="hero-cap">
-    <h1 class="serif">素顏也有<br>自然好看的眉毛</h1>
-    <p>輕透感霧眉・高雄｜早上多睡十分鐘，不用再趕著畫眉</p>
-  </div>
-</div>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">你是不是也這樣</p>
-    <h2 class="serif">每天為了眉毛，趕時間又狼狽</h2>
-    <div class="pt-list">
-      <div class="pt-item">
-        <div class="pt-num">01</div>
-        <div><b>早上趕時間</b><p>左右眉畫不對稱，重畫第三次，眼看就要遲到。</p></div>
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-label">Oldlace Studio · 高雄</p>
+      <h1 class="hero-title">
+        素顏也有<br>自然好看的眉毛
+      </h1>
+      <p class="hero-desc">早上多睡十分鐘，不用再趕著畫眉</p>
+      <a href="book.html" class="hero-link">預約諮詢</a>
+    </div>
+  </section>
+
+
+  <!-- ══ STATEMENT ══ -->
+  <div class="statement fade">
+    <p class="statement-en">
+      A slower kind of beauty,<br>
+      revealed in silence.
+    </p>
+    <div class="statement-divider"></div>
+    <p class="statement-zh">
+      一條不是畫上去的眉，<br>
+      是依著你的臉型、你的輪廓<br>
+      設計出來的形狀。<br>
+      自然到旁邊的人看不出來是霧的。
+    </p>
+  </div>
+
+
+  <!-- ══ WORKS ══ -->
+  <div class="works fade">
+    <div class="works-header">
+      <h2 class="works-title">做完的樣子</h2>
+      <span class="works-caption">自然到旁邊的人看不出來是霧的</span>
+    </div>
+    <div class="works-grid">
+      <div class="work-item portrait fade">
+        <img src="assets/result1.jpg" alt="輕透感霧眉作品">
       </div>
-      <div class="pt-item">
-        <div class="pt-num">02</div>
-        <div><b>下午眉尾消失</b><p>汗一流、雨一淋，眉尾悄悄不見，隨時要補妝。</p></div>
+      <div class="work-item portrait fade">
+        <img src="assets/result2.jpg" alt="輕透感霧眉作品">
       </div>
-      <div class="pt-item">
-        <div class="pt-num">03</div>
-        <div><b>每天都要過這一關</b><p>如果眉毛本來就好看，這些麻煩，其實都可以不用再有。</p></div>
+      <div class="work-item portrait fade">
+        <img src="assets/result3.jpg" alt="輕透感霧眉作品">
+      </div>
+      <div class="work-item square fade">
+        <img src="assets/portrait.jpg" alt="霧眉近景">
+      </div>
+      <div class="work-item square fade">
+        <img src="assets/portrait2.jpg" alt="霧眉近景">
+      </div>
+      <div class="work-item square fade">
+        <img src="assets/work4.jpg" alt="霧眉作品">
       </div>
     </div>
   </div>
-</section>
 
-<section class="tight" style="background:var(--cream)">
-  <div class="wrap">
-    <p class="eyebrow">做之前你可能會擔心</p>
-    <div class="qa"><div class="q">會痛嗎？</div>
-      <div class="a">操作前會先敷舒緩，過程只有微微刺感。多數客人放鬆到睡著，或邊聊天就完成了。</div></div>
-    <div class="qa"><div class="q">會結痂、過渡期很醜嗎？</div>
-      <div class="a">採輕透手法，皮膚負擔小，幾乎沒有明顯結痂期，修復快，不影響上班見人。</div></div>
-    <div class="qa"><div class="q">以後會變藍變綠嗎？</div>
-      <div class="a">不會。使用穩定有機色料，後期只會自然變淡，不會變橘紅或藍綠。</div></div>
-  </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Why Oldlace</p>
-    <h2 class="serif">為什麼客人喜歡這裡</h2>
-    <div class="feat-list">
-      <div class="feat">
-        <img src="assets/work4.jpg" alt="霧眉成果" loading="lazy">
-        <div><h3>自然不做作</h3><p>以原生眉的邏輯設計眉型，看起來像天生的，不像畫上去。</p></div>
+  <!-- ══ WHY OLDLACE ══ -->
+  <div class="pillars fade">
+    <p class="section-label">Why Oldlace</p>
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h3 class="pillar-name">自然不做作</h3>
+        <p class="pillar-body">
+          以原生眉的邏輯設計眉型，
+          看起來像天生的，不像畫上去。
+        </p>
       </div>
-      <div class="feat">
-        <img src="assets/client.jpg" alt="施術過程" loading="lazy">
-        <div><h3>輕透好修復</h3><p>降低皮膚負擔，修復期短，做完可以直接赴約。</p></div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h3 class="pillar-name">輕透好修復</h3>
+        <p class="pillar-body">
+          降低皮膚負擔，幾乎沒有明顯結痂期，
+          做完可以直接赴約。
+        </p>
       </div>
-      <div class="feat">
-        <img src="assets/portrait2.jpg" alt="Oldlace 晨容" loading="lazy">
-        <div><h3>一對一專屬</h3><p>單人作業、不趕場，是專屬於你的安靜時間。</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="tight">
-  <div class="wrap">
-    <p class="eyebrow">Works</p>
-    <h2 class="serif">做完的樣子</h2>
-    <p class="soft">自然到旁邊的人看不出來是霧的。</p>
-    <div class="works-main">
-      <img src="assets/before-after.jpg" alt="霧眉前後對比" loading="lazy">
-    </div>
-    <div class="works-sub">
-      <img src="assets/result1.jpg" alt="霧眉作品" loading="lazy">
-      <img src="assets/result2.jpg" alt="霧眉作品" loading="lazy">
-      <img src="assets/result3.jpg" alt="霧眉作品" loading="lazy">
-      <img src="assets/work4.jpg" alt="霧眉成果" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<section style="background:var(--cream)">
-  <div class="wrap">
-    <p class="eyebrow">Voices</p>
-    <h2 class="serif">做完她們說</h2>
-    <div class="review-grid">
-      <div class="review-card">
-        <p class="review-text">「今天出門被自己的眉毛美到～真的感謝你的神手！讓我這一年在澳洲打工都睡到自然醒才出門，而且自然到朋友以為是我自己的眉毛，還稱讚眉型很好看，知道是霧的之後驚嘆超久」</p>
-        <p class="review-meta">客人・在澳洲打工</p>
-      </div>
-      <div class="review-card">
-        <p class="review-text">「一個禮拜了，真的超自然～而且現在上班都睡到最後一刻，上個淡妝就出門了，完全不用半小時，快速到不行」</p>
-        <p class="review-meta">客人・上班族</p>
-      </div>
-      <div class="review-card">
-        <p class="review-text">「男朋友問我剛剛是去做美甲還是幹嘛，完全看不出去霧眉，他確認後大讚很自然的超好看」</p>
-        <p class="review-meta">客人回饋</p>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h3 class="pillar-name">一對一專屬</h3>
+        <p class="pillar-body">
+          單人作業、不趕場，
+          是專屬於你的安靜時間。
+        </p>
       </div>
     </div>
   </div>
-</section>
 
-<section class="cta-band">
-  <div class="wrap">
-    <h2 class="serif">準備好擁有自然的眉毛了嗎？</h2>
-    <p class="soft">線上選好時段，傳送 LINE 就完成預約。</p>
-    <div class="btns">
-      <a class="btn btn-line" href="book.html">線上預約</a>
-      <a class="btn btn-ghost" href="services.html">查看服務與價格</a>
+
+  <!-- ══ VOICES ══ -->
+  <div class="voices fade">
+    <p class="section-label">Voices</p>
+
+    <span class="quote-mark">"</span>
+    <p class="quote-text">
+      一個禮拜了，真的超自然。現在上班都睡到最後一刻，
+      上個淡妝就出門了，完全不用半小時，快速到不行。
+    </p>
+    <p class="quote-source">上班族客人</p>
+
+    <div class="voice-sep"></div>
+
+    <span class="quote-mark">"</span>
+    <p class="quote-text">
+      男朋友問我剛剛是去做美甲還是幹嘛，
+      完全看不出去霧眉，他確認後大讚很自然的超好看。
+    </p>
+    <p class="quote-source">客人回饋</p>
+  </div>
+
+
+  <!-- ══ CTA ══ -->
+  <div class="cta fade">
+    <h2 class="cta-title">
+      準備好擁有<br>自然的眉毛了嗎
+    </h2>
+    <p class="cta-desc">線上選好時段，傳送 LINE 就完成預約。</p>
+    <div class="cta-buttons">
+      <a href="book.html"     class="btn-dark">線上預約</a>
+      <a href="services.html" class="btn-outline">查看服務與價目</a>
     </div>
   </div>
-</section>
 
-<footer>
-  <div class="wrap">
-    <div class="serif" style="font-size:16px;letter-spacing:.2em">OLDLACE BEAUTY</div>
-    <div class="f-links">
-      <a href="services.html">服務</a>
-      <a href="faq.html">常見問題</a>
-      <a href="policy.html">預約須知</a>
-      <a href="book.html">預約</a>
-    </div>
-    <a class="btn btn-line" style="max-width:280px;margin:0 auto" href="https://line.me/R/ti/p/@oldlace">加入官方 LINE</a>
-    <small>© Oldlace Beauty・高雄・自然霧眉與霧眉教學</small>
-  </div>
-</footer>
 
-<script>
-document.addEventListener('click',function(e){
-  var m=document.getElementById('m');
-  if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.menu-btn'))m.classList.remove('open');
-});
-</script>
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-brand">Oldlace Beauty</div>
+    <ul class="footer-nav">
+      <li><a href="services.html">服務</a></li>
+      <li><a href="faq.html">常見問題</a></li>
+      <li><a href="policy.html">預約須知</a></li>
+      <li><a href="https://line.me/R/ti/p/@oldlace">加入 LINE</a></li>
+    </ul>
+  </footer>
+
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.querySelectorAll('.work-item.fade').forEach(el => {
+            el.classList.add('visible');
+          });
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
