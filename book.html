@@ -48,29 +48,43 @@
     .screen.active { display: block; }
 
     /* ── NAV ── */
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap');
     nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 0 40px; height: 60px;
-      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--gray-200);
+      padding: 1.4rem 3rem;
+      background: rgba(248,247,245,0.96); backdrop-filter: blur(8px);
+      border-bottom: 1px solid #E2E0DA;
     }
-    .logo { font-size: 14px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-    .nav-links { display: flex; gap: 28px; }
-    .nav-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; }
+    .nav-logo { text-decoration: none; color: #1C1A17; cursor: pointer; }
+    .nav-logo-main {
+      display: block; font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 300;
+      letter-spacing: 0.22em; text-transform: uppercase;
+    }
+    .nav-logo-sub {
+      display: block; font-size: 0.58rem;
+      letter-spacing: 0.38em; color: #9C9890;
+      margin-top: 0.12rem; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a { font-size: 0.76rem; letter-spacing: 0.08em; color: #9C9890; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #1C1A17; }
     .nav-book {
-      background: var(--black); color: var(--white);
-      border: none; padding: 9px 20px; border-radius: var(--radius-sm);
-      font-size: 13px; cursor: pointer; text-decoration: none;
+      font-size: 0.76rem; letter-spacing: 0.12em;
+      color: #1C1A17; text-decoration: none;
+      border-bottom: 1px solid #1C1A17; padding-bottom: 1px;
+      transition: opacity 0.2s;
     }
+    .nav-book:hover { opacity: 0.45; }
     .book-hamburger { display:none; border:0; background:none; font-size:24px; cursor:pointer;
-      padding:6px; min-width:44px; min-height:44px; align-items:center; justify-content:center; color:var(--black); }
-    .book-mobile-menu { position:fixed; inset:60px 0 auto 0; background:#fff;
-      border-bottom:1px solid var(--gray-200); transform:translateY(-130%);
+      padding:6px; min-width:44px; min-height:44px; align-items:center; justify-content:center; color:#1C1A17; }
+    .book-mobile-menu { position:fixed; inset:73px 0 auto 0; background:#F8F7F5;
+      border-bottom:1px solid #E2E0DA; transform:translateY(-130%);
       transition:transform .28s ease; z-index:99; }
     .book-mobile-menu.open { transform:translateY(0); }
     .book-mobile-menu a { display:block; padding:16px 24px; text-decoration:none;
-      border-top:1px solid var(--gray-200); font-size:16px; color:var(--black); }
+      border-top:1px solid #E2E0DA; font-size:16px; color:#1C1A17; }
     .book-mobile-menu a.bm-active { color:#06c755; font-weight:600; }
 
     /* ── HERO ── */
@@ -134,7 +148,7 @@
     .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; }
     @media (max-width: 700px) {
       .booking-grid { grid-template-columns: 1fr; }
-      nav { padding: 0 20px; }
+      nav { padding: 1rem 1.2rem; }
       .nav-links { display: none; }
       .nav-book { display: none; }
       .book-hamburger { display: flex; }
@@ -392,8 +406,12 @@
     .toast.show { transform: translateX(-50%) translateY(0); }
 
     /* Footer */
-    footer { padding: 28px 40px; display: flex; justify-content: center; align-items: center; gap: 24px; font-size: 12px; color: var(--gray-400); }
-    footer a { color: var(--gray-400); text-decoration: none; }
+    footer { border-top: 1px solid #E2E0DA; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; background: #F8F7F5; }
+    .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; letter-spacing: 0.22em; text-transform: uppercase; color: #9C9890; }
+    .footer-nav { display: flex; gap: 2rem; list-style: none; }
+    .footer-nav a { font-size: 0.72rem; letter-spacing: 0.1em; color: #9C9890; text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: #1C1A17; }
+    @media(max-width:600px){ footer { flex-direction:column; gap:1.2rem; text-align:center; padding:1.8rem 1.5rem; } }
 
     /* ══ ADMIN ══ */
     #screen-admin { background:#f5f4f2; min-height:100vh; padding-bottom:60px; }
@@ -471,13 +489,16 @@
 <div id="screen-booking" class="screen active">
 
   <nav>
-    <div class="logo" onclick="onLogoClick()" style="cursor:pointer">Oldlace Beauty</div>
-    <div class="nav-links">
-      <a href="index.html">首頁</a>
-      <a href="services.html">服務與價目</a>
-      <a href="faq.html">常見問題</a>
-      <a href="policy.html">預約須知</a>
+    <div class="nav-logo" onclick="onLogoClick()">
+      <span class="nav-logo-main">Oldlace</span>
+      <span class="nav-logo-sub">Beauty Studio</span>
     </div>
+    <ul class="nav-links">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="services.html">服務與價目</a></li>
+      <li><a href="faq.html">常見問題</a></li>
+      <li><a href="policy.html">預約須知</a></li>
+    </ul>
     <a class="nav-book" href="#booking">立即預約</a>
     <button class="book-hamburger" aria-label="選單" onclick="document.getElementById('book-nav').classList.toggle('open')">☰</button>
   </nav>
@@ -587,8 +608,13 @@
   </section>
 
   <footer>
-    <span>© 2026 Oldlace Beauty</span>
-    <a href="https://www.instagram.com/oldlace.beauty/" target="_blank">Instagram</a>
+    <div class="footer-brand">Oldlace Beauty</div>
+    <ul class="footer-nav">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="services.html">服務</a></li>
+      <li><a href="faq.html">常見問題</a></li>
+      <li><a href="policy.html">預約須知</a></li>
+    </ul>
   </footer>
 </div>
 

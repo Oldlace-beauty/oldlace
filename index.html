@@ -22,20 +22,18 @@
 
   <style>
     /* ── Reset ── */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Tokens ── */
     :root {
-      --bg:      #F8F7F5;
-      --text:    #1C1A17;
-      --muted:   #9C9890;
-      --border:  #E4E2DC;
-      --dark:    #2A2720;
-      --white:   #FEFEFE;
+      --bg:       #F8F7F5;
+      --text:     #1C1A17;
+      --muted:    #9C9890;
+      --border:   #E2E0DA;
+      --dark:     #1A1916;
+      --dark-mid: #2A2720;
+      --light:    #F2F1EF;
+      --accent:   #8A7E72;
+      --white:    #FEFEFE;
     }
 
     html { scroll-behavior: smooth; }
@@ -47,6 +45,7 @@
       font-weight: 300;
       line-height: 1.9;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
 
@@ -56,26 +55,34 @@
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
+      z-index: 200;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.4rem 3rem;
-      background: var(--bg);
+      padding: 1.5rem 3rem;
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(248, 247, 245, 0.96);
       border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
     }
 
     .nav-logo {
       text-decoration: none;
-      color: var(--text);
+      color: var(--white);
+      transition: color 0.4s;
     }
+
+    nav.scrolled .nav-logo { color: var(--text); }
 
     .nav-logo-main {
       display: block;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 300;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
     }
 
@@ -83,38 +90,283 @@
       display: block;
       font-size: 0.58rem;
       letter-spacing: 0.38em;
-      color: var(--muted);
-      margin-top: 0.12rem;
+      opacity: 0.55;
+      margin-top: 0.1rem;
       text-transform: uppercase;
     }
 
     .nav-links {
       display: flex;
-      gap: 2.4rem;
+      gap: 2.5rem;
       list-style: none;
     }
 
     .nav-links a {
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      color: var(--text);
+      font-size: 0.76rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.75);
       text-decoration: none;
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: var(--muted); }
+    nav.scrolled .nav-links a { color: var(--muted); }
+    .nav-links a:hover { opacity: 1; color: var(--white); }
+    nav.scrolled .nav-links a:hover { color: var(--text); }
 
     .nav-book {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       letter-spacing: 0.12em;
-      color: var(--text);
+      color: rgba(255,255,255,0.85);
       text-decoration: none;
-      border-bottom: 1px solid var(--text);
+      border-bottom: 1px solid rgba(255,255,255,0.45);
       padding-bottom: 1px;
-      transition: opacity 0.2s;
+      transition: color 0.4s, border-color 0.4s, opacity 0.2s;
     }
 
-    .nav-book:hover { opacity: 0.45; }
+    nav.scrolled .nav-book {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    .nav-book:hover { opacity: 0.6; }
+
+
+    /* ══════════════════════════════════════
+       FLOATING BOOKING BUTTON + PANEL
+    ══════════════════════════════════════ */
+    .booking-trigger {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 300;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      padding: 1.4rem 0.8rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px 0 0 6px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .booking-trigger:hover { background: var(--dark-mid); }
+
+    .booking-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 25, 22, 0.5);
+      z-index: 400;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .booking-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .booking-panel {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: min(420px, 100vw);
+      background: var(--dark);
+      z-index: 500;
+      transform: translateX(100%);
+      transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .booking-panel.open { transform: translateX(0); }
+
+    .panel-header {
+      padding: 2.5rem 2.5rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .panel-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--white);
+    }
+
+    .panel-subtitle {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em;
+      margin-top: 0.4rem;
+    }
+
+    .panel-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.45);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.2rem;
+      transition: color 0.2s;
+      font-weight: 300;
+    }
+
+    .panel-close:hover { color: var(--white); }
+
+    .panel-body {
+      padding: 2rem 2.5rem;
+      flex: 1;
+    }
+
+    .form-group { margin-bottom: 1.8rem; }
+
+    .form-label {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      padding: 0.85rem 1rem;
+      border-radius: 0;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-input:focus,
+    .form-select:focus { border-color: rgba(255,255,255,0.35); }
+
+    .form-input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .select-wrap { position: relative; }
+
+    .select-wrap::after {
+      content: '↓';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    .form-select option { background: #2A2720; }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.83rem;
+      color: rgba(255,255,255,0.65);
+      cursor: pointer;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .radio-label:hover { border-color: rgba(255,255,255,0.3); }
+    .radio-label input[type="radio"] { display: none; }
+
+    .radio-label.selected {
+      border-color: rgba(255,255,255,0.5);
+      color: var(--white);
+    }
+
+    .radio-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.35);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .radio-label.selected .radio-dot {
+      background: var(--white);
+      border-color: var(--white);
+    }
+
+    .panel-footer {
+      padding: 1.5rem 2.5rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.82rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover { background: #6e6258; }
+
+    .submit-note {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      margin-top: 0.8rem;
+      letter-spacing: 0.06em;
+      line-height: 1.6;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(3rem);
+      background: var(--dark-mid);
+      color: var(--white);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      padding: 0.85rem 1.8rem;
+      border-radius: 2px;
+      z-index: 600;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
 
     /* ══════════════════════════════════════
@@ -124,17 +376,18 @@
       height: 100vh;
       position: relative;
       display: flex;
-      align-items: flex-end;
+      flex-direction: column;
+      justify-content: flex-end;
       padding: 4.5rem 3rem;
     }
 
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: #2E2C28;
+      background: var(--dark);
       background-image: url('assets/hero.jpg');
       background-size: cover;
-      background-position: center 30%;
+      background-position: center 25%;
     }
 
     .hero-bg::after {
@@ -142,265 +395,265 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(
-        to top,
-        rgba(20, 18, 14, 0.60) 0%,
-        rgba(20, 18, 14, 0.10) 55%,
-        transparent 100%
+        160deg,
+        rgba(26,25,22,0.15) 0%,
+        rgba(26,25,22,0.65) 100%
       );
     }
 
     .hero-content {
       position: relative;
       z-index: 1;
+      max-width: 520px;
     }
 
-    .hero-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      color: rgba(255,255,255,0.55);
+    .hero-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.5);
       text-transform: uppercase;
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.2rem;
     }
 
     .hero-title {
       font-family: 'Noto Serif TC', serif;
-      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
       font-weight: 300;
-      line-height: 1.3;
       color: var(--white);
+      line-height: 1.3;
       letter-spacing: 0.06em;
     }
 
-    .hero-desc {
-      margin-top: 1.4rem;
-      font-size: 0.84rem;
-      color: rgba(255,255,255,0.58);
-      letter-spacing: 0.1em;
+    .hero-sub {
+      margin-top: 1.3rem;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.12em;
     }
 
-    .hero-link {
-      display: inline-block;
-      margin-top: 2.8rem;
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-      color: var(--white);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.45);
-      padding-bottom: 2px;
-      transition: border-color 0.25s;
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 3rem;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .hero-link:hover { border-color: var(--white); }
+    .scroll-hint span {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
 
 
     /* ══════════════════════════════════════
-       STATEMENT
+       PHILOSOPHY
     ══════════════════════════════════════ */
-    .statement {
-      padding: 9rem 3rem;
+    .philosophy {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      max-width: 660px;
-      margin: 0 auto;
+      padding: 8rem 3rem;
     }
 
-    .statement-en {
+    .philosophy-inner { max-width: 600px; }
+
+    .philosophy-en {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
       font-weight: 300;
       color: var(--muted);
-      line-height: 1.65;
-      margin-bottom: 2.2rem;
+      line-height: 1.55;
+      margin-bottom: 2.5rem;
     }
 
-    .statement-divider {
-      width: 32px;
-      height: 1px;
+    .philosophy-line {
+      width: 1px;
+      height: 50px;
       background: var(--border);
-      margin: 0 auto 2.2rem;
+      margin: 0 auto 2.5rem;
     }
 
-    .statement-zh {
-      font-size: 0.88rem;
-      line-height: 2.2;
+    .philosophy-zh {
+      font-size: 0.9rem;
+      line-height: 2.3;
+      letter-spacing: 0.08em;
       color: var(--text);
-      letter-spacing: 0.08em;
     }
 
 
     /* ══════════════════════════════════════
-       WORKS
+       WORKS — alternating
     ══════════════════════════════════════ */
-    .works {
-      padding: 0 3rem 8rem;
-      max-width: 1080px;
-      margin: 0 auto;
+    .works-item {
+      display: grid;
+      min-height: 85vh;
     }
 
-    .works-header {
+    .works-item.left  { grid-template-columns: 60fr 40fr; }
+    .works-item.right { grid-template-columns: 40fr 60fr; }
+
+    .works-item.right .work-img  { order: 2; }
+    .works-item.right .work-text { order: 1; }
+
+    .work-img {
+      background: #C0BDB6;
+      background-size: cover;
+      background-position: center;
+      min-height: 60vh;
+    }
+
+    .work-text {
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 2rem;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 4rem;
+      background: var(--bg);
     }
 
-    .works-title {
-      font-family: 'Noto Serif TC', serif;
-      font-size: 1.35rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-    }
-
-    .works-caption {
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-    }
-
-    .works-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-    }
-
-    .work-item {
-      overflow: hidden;
-      background: #C8C4BE;
-    }
-
-    .work-item.portrait { aspect-ratio: 3 / 4; }
-    .work-item.square   { aspect-ratio: 1 / 1; }
-
-    .work-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.7s ease;
-    }
-
-    .work-item:hover img { transform: scale(1.04); }
-
-
-    /* ══════════════════════════════════════
-       WHY OLDLACE
-    ══════════════════════════════════════ */
-    .pillars {
-      padding: 7rem 3rem;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .section-label {
+    .work-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.68rem;
-      letter-spacing: 0.32em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 3.5rem;
-    }
-
-    .pillars-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4rem;
-    }
-
-    .pillar-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
+      font-size: 3.5rem;
       font-weight: 300;
       color: var(--border);
       line-height: 1;
-      margin-bottom: 1.6rem;
-    }
-
-    .pillar-name {
-      font-size: 0.92rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      margin-bottom: 0.8rem;
-    }
-
-    .pillar-body {
-      font-size: 0.8rem;
-      color: var(--muted);
-      line-height: 1.95;
-    }
-
-
-    /* ══════════════════════════════════════
-       VOICES
-    ══════════════════════════════════════ */
-    .voices {
-      padding: 9rem 3rem;
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .quote-mark {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 5rem;
-      line-height: 0.6;
-      color: var(--border);
-      display: block;
       margin-bottom: 1.8rem;
     }
 
-    .quote-text {
-      font-size: 0.93rem;
-      line-height: 2.1;
-      letter-spacing: 0.04em;
-      margin-bottom: 1.5rem;
-    }
-
-    .quote-source {
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
+    .work-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
       color: var(--muted);
       text-transform: uppercase;
+      margin-bottom: 1rem;
     }
 
-    .voice-sep {
-      width: 1px;
-      height: 3.5rem;
-      background: var(--border);
-      margin: 3.5rem auto;
+    .work-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .work-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 2;
+      letter-spacing: 0.04em;
     }
 
 
     /* ══════════════════════════════════════
-       CTA
+       QUOTE
     ══════════════════════════════════════ */
-    .cta {
-      padding: 9rem 3rem;
+    .quote-section {
+      position: relative;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      max-width: 560px;
+      padding: 8rem 3rem;
+      overflow: hidden;
+    }
+
+    .quote-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--dark);
+      background-image: url('assets/studio.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .quote-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(26,25,22,0.72);
+    }
+
+    .quote-content {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+    }
+
+    .quote-mark-large {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem;
+      line-height: 0.7;
+      color: rgba(255,255,255,0.12);
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+
+    .quote-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.9;
+      letter-spacing: 0.06em;
+    }
+
+    .quote-source {
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+    }
+
+
+    /* ══════════════════════════════════════
+       CLOSING CTA
+    ══════════════════════════════════════ */
+    .closing {
+      padding: 10rem 3rem;
+      text-align: center;
+      max-width: 500px;
       margin: 0 auto;
     }
 
-    .cta-title {
+    .closing-title {
       font-family: 'Noto Serif TC', serif;
-      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
       font-weight: 300;
       letter-spacing: 0.1em;
-      line-height: 1.65;
+      line-height: 1.55;
       margin-bottom: 1rem;
     }
 
-    .cta-desc {
+    .closing-sub {
       font-size: 0.8rem;
       color: var(--muted);
-      letter-spacing: 0.08em;
-      margin-bottom: 3rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 3.5rem;
     }
 
-    .cta-buttons {
+    .cta-pair {
       display: flex;
       gap: 1rem;
       justify-content: center;
@@ -409,29 +662,29 @@
 
     .btn-dark {
       display: inline-block;
-      padding: 0.95rem 2.6rem;
-      background: var(--dark);
+      padding: 1rem 2.8rem;
+      background: var(--dark-mid);
       color: var(--white);
       text-decoration: none;
       font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      transition: opacity 0.2s;
+      letter-spacing: 0.18em;
+      transition: background 0.2s;
     }
 
-    .btn-dark:hover { opacity: 0.72; }
+    .btn-dark:hover { background: var(--dark); }
 
-    .btn-outline {
+    .btn-ghost {
       display: inline-block;
-      padding: 0.95rem 2.6rem;
+      padding: 1rem 2.8rem;
       border: 1px solid var(--border);
       color: var(--text);
       text-decoration: none;
       font-size: 0.78rem;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       transition: border-color 0.2s;
     }
 
-    .btn-outline:hover { border-color: var(--text); }
+    .btn-ghost:hover { border-color: var(--text); }
 
 
     /* ══════════════════════════════════════
@@ -448,7 +701,7 @@
     .footer-brand {
       font-family: 'Cormorant Garamond', serif;
       font-size: 0.85rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--muted);
     }
@@ -471,49 +724,38 @@
 
 
     /* ══════════════════════════════════════
-       FADE-IN ANIMATION
+       FADE ANIMATION
     ══════════════════════════════════════ */
     .fade {
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.9s ease, transform 0.9s ease;
+      transform: translateY(22px);
+      transition: opacity 1s ease, transform 1s ease;
     }
 
-    .fade.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .works-grid .work-item:nth-child(1) { transition-delay: 0s; }
-    .works-grid .work-item:nth-child(2) { transition-delay: 0.08s; }
-    .works-grid .work-item:nth-child(3) { transition-delay: 0.16s; }
-    .works-grid .work-item:nth-child(4) { transition-delay: 0.24s; }
-    .works-grid .work-item:nth-child(5) { transition-delay: 0.32s; }
-    .works-grid .work-item:nth-child(6) { transition-delay: 0.40s; }
+    .fade.visible { opacity: 1; transform: translateY(0); }
+    .fade-slow { transition-duration: 1.4s; }
 
 
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
       nav { padding: 1.2rem 1.5rem; }
       .nav-links { display: none; }
 
       .hero { padding: 3rem 1.5rem; }
 
-      .statement,
-      .pillars,
-      .voices,
-      .cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .works-item.left,
+      .works-item.right { grid-template-columns: 1fr; }
 
-      .works { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .works-item.right .work-img  { order: 1; }
+      .works-item.right .work-text { order: 2; }
 
-      .works-grid { grid-template-columns: repeat(2, 1fr); }
+      .work-text { padding: 3.5rem 1.5rem; }
 
-      .pillars-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
+      .philosophy,
+      .quote-section,
+      .closing { padding-left: 1.5rem; padding-right: 1.5rem; }
 
       footer {
         flex-direction: column;
@@ -521,13 +763,15 @@
         text-align: center;
         padding: 2rem 1.5rem;
       }
+
+      .booking-panel { width: 100vw; }
     }
   </style>
 </head>
 <body>
 
   <!-- ══ NAV ══ -->
-  <nav>
+  <nav id="main-nav">
     <a href="index.html" class="nav-logo">
       <span class="nav-logo-main">Oldlace</span>
       <span class="nav-logo-sub">Beauty Studio</span>
@@ -541,128 +785,185 @@
   </nav>
 
 
+  <!-- ══ FLOATING BOOKING TRIGGER ══ -->
+  <button class="booking-trigger" id="bookingTrigger" aria-label="線上預約">
+    線 上 預 約
+  </button>
+
+  <!-- Overlay -->
+  <div class="booking-overlay" id="bookingOverlay"></div>
+
+  <!-- Booking Panel -->
+  <aside class="booking-panel" id="bookingPanel" role="dialog" aria-label="預約表單">
+    <div class="panel-header">
+      <div>
+        <div class="panel-title">線上預約</div>
+        <div class="panel-subtitle">填妥後系統將整理資訊傳至 LINE</div>
+      </div>
+      <button class="panel-close" id="panelClose" aria-label="關閉">✕</button>
+    </div>
+
+    <div class="panel-body">
+      <form id="bookingForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="bookDate">預約日期</label>
+          <input type="date" id="bookDate" name="date" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="bookTime">預約時段</label>
+          <div class="select-wrap">
+            <select id="bookTime" name="time" class="form-select" required>
+              <option value="" disabled selected>請選擇時段</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="bookCount">人數</label>
+          <div class="select-wrap">
+            <select id="bookCount" name="count" class="form-select" required>
+              <option value="1" selected>1 位</option>
+              <option value="2">2 位</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">是否曾做過眉毛？</label>
+          <div class="radio-group" id="prevGroup">
+            <label class="radio-label" data-value="no">
+              <input type="radio" name="prev" value="no">
+              <span class="radio-dot"></span>
+              尚未做過
+            </label>
+            <label class="radio-label" data-value="yes">
+              <input type="radio" name="prev" value="yes">
+              <span class="radio-dot"></span>
+              曾經做過
+            </label>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="panel-footer">
+      <button class="btn-submit" id="submitBtn">確認預約 → 傳至 LINE</button>
+      <p class="submit-note">
+        系統將複製預約資訊，<br>請在 LINE 對話框貼上並傳送。
+      </p>
+    </div>
+  </aside>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">訊息已複製，請在 LINE 貼上發送 ✓</div>
+
+
   <!-- ══ HERO ══ -->
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <p class="hero-label">Oldlace Studio · 高雄</p>
+      <p class="hero-tag">Oldlace Studio · 高雄</p>
       <h1 class="hero-title">
         素顏也有<br>自然好看的眉毛
       </h1>
-      <p class="hero-desc">早上多睡十分鐘，不用再趕著畫眉</p>
-      <a href="book.html" class="hero-link">預約諮詢</a>
+      <p class="hero-sub">早上多睡十分鐘，不用再趕著畫眉</p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
     </div>
   </section>
 
 
-  <!-- ══ STATEMENT ══ -->
-  <div class="statement fade">
-    <p class="statement-en">
-      A slower kind of beauty,<br>
-      revealed in silence.
-    </p>
-    <div class="statement-divider"></div>
-    <p class="statement-zh">
-      一條不是畫上去的眉，<br>
-      是依著你的臉型、你的輪廓<br>
-      設計出來的形狀。<br>
-      自然到旁邊的人看不出來是霧的。
-    </p>
+  <!-- ══ PHILOSOPHY ══ -->
+  <div class="philosophy fade fade-slow">
+    <div class="philosophy-inner">
+      <p class="philosophy-en">
+        A slower kind of beauty,<br>
+        revealed in silence.
+      </p>
+      <div class="philosophy-line"></div>
+      <p class="philosophy-zh">
+        一條不是畫上去的眉，<br>
+        是依著你的臉型、你的輪廓<br>
+        設計出來、屬於你的形狀。
+      </p>
+    </div>
   </div>
 
 
   <!-- ══ WORKS ══ -->
-  <div class="works fade">
-    <div class="works-header">
-      <h2 class="works-title">做完的樣子</h2>
-      <span class="works-caption">自然到旁邊的人看不出來是霧的</span>
-    </div>
-    <div class="works-grid">
-      <div class="work-item portrait fade">
-        <img src="assets/result1.jpg" alt="輕透感霧眉作品">
-      </div>
-      <div class="work-item portrait fade">
-        <img src="assets/result2.jpg" alt="輕透感霧眉作品">
-      </div>
-      <div class="work-item portrait fade">
-        <img src="assets/result3.jpg" alt="輕透感霧眉作品">
-      </div>
-      <div class="work-item square fade">
-        <img src="assets/portrait.jpg" alt="霧眉近景">
-      </div>
-      <div class="work-item square fade">
-        <img src="assets/portrait2.jpg" alt="霧眉近景">
-      </div>
-      <div class="work-item square fade">
-        <img src="assets/work4.jpg" alt="霧眉作品">
-      </div>
+  <div class="works-item left fade">
+    <div class="work-img" style="background-image: url('assets/result1.jpg');"></div>
+    <div class="work-text">
+      <div class="work-num">01</div>
+      <p class="work-label">Natural Brows</p>
+      <h2 class="work-title">低存在感<br>高度融合的眉毛</h2>
+      <p class="work-desc">
+        看起來像天生長出來的，<br>
+        不是貼上去的標籤。
+      </p>
     </div>
   </div>
 
+  <div class="works-item right fade">
+    <div class="work-img" style="background-image: url('assets/before-after.jpg');"></div>
+    <div class="work-text">
+      <div class="work-num">02</div>
+      <p class="work-label">Before · After</p>
+      <h2 class="work-title">每一位客人<br>都有專屬的眉型</h2>
+      <p class="work-desc">
+        沒有模板，沒有制式。<br>
+        只有這張臉，適合的設計。
+      </p>
+    </div>
+  </div>
 
-  <!-- ══ WHY OLDLACE ══ -->
-  <div class="pillars fade">
-    <p class="section-label">Why Oldlace</p>
-    <div class="pillars-grid">
-      <div class="pillar">
-        <div class="pillar-num">01</div>
-        <h3 class="pillar-name">自然不做作</h3>
-        <p class="pillar-body">
-          以原生眉的邏輯設計眉型，
-          看起來像天生的，不像畫上去。
-        </p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">02</div>
-        <h3 class="pillar-name">輕透好修復</h3>
-        <p class="pillar-body">
-          降低皮膚負擔，幾乎沒有明顯結痂期，
-          做完可以直接赴約。
-        </p>
-      </div>
-      <div class="pillar">
-        <div class="pillar-num">03</div>
-        <h3 class="pillar-name">一對一專屬</h3>
-        <p class="pillar-body">
-          單人作業、不趕場，
-          是專屬於你的安靜時間。
-        </p>
-      </div>
+  <div class="works-item left fade">
+    <div class="work-img" style="background-image: url('assets/result2.jpg');"></div>
+    <div class="work-text">
+      <div class="work-num">03</div>
+      <p class="work-label">Recovery</p>
+      <h2 class="work-title">輕透手法<br>幾乎沒有修復期</h2>
+      <p class="work-desc">
+        皮膚負擔極低，<br>
+        做完可以直接赴約。
+      </p>
     </div>
   </div>
 
 
-  <!-- ══ VOICES ══ -->
-  <div class="voices fade">
-    <p class="section-label">Voices</p>
-
-    <span class="quote-mark">"</span>
-    <p class="quote-text">
-      一個禮拜了，真的超自然。現在上班都睡到最後一刻，
-      上個淡妝就出門了，完全不用半小時，快速到不行。
-    </p>
-    <p class="quote-source">上班族客人</p>
-
-    <div class="voice-sep"></div>
-
-    <span class="quote-mark">"</span>
-    <p class="quote-text">
-      男朋友問我剛剛是去做美甲還是幹嘛，
-      完全看不出去霧眉，他確認後大讚很自然的超好看。
-    </p>
-    <p class="quote-source">客人回饋</p>
+  <!-- ══ QUOTE ══ -->
+  <div class="quote-section fade">
+    <div class="quote-bg"></div>
+    <div class="quote-content">
+      <span class="quote-mark-large">"</span>
+      <p class="quote-text">
+        一個禮拜了，真的超自然。<br>
+        現在上班都睡到最後一刻，<br>
+        上個淡妝就出門了。
+      </p>
+      <p class="quote-source">客人回饋 · 上班族</p>
+    </div>
   </div>
 
 
-  <!-- ══ CTA ══ -->
-  <div class="cta fade">
-    <h2 class="cta-title">
-      準備好擁有<br>自然的眉毛了嗎
-    </h2>
-    <p class="cta-desc">線上選好時段，傳送 LINE 就完成預約。</p>
-    <div class="cta-buttons">
-      <a href="book.html"     class="btn-dark">線上預約</a>
-      <a href="services.html" class="btn-outline">查看服務與價目</a>
+  <!-- ══ CLOSING CTA ══ -->
+  <div class="closing fade">
+    <h2 class="closing-title">準備好了嗎</h2>
+    <p class="closing-sub">線上選好時段，傳送 LINE 就完成預約。</p>
+    <div class="cta-pair">
+      <a href="#" class="btn-dark" id="ctaBookBtn">立即預約</a>
+      <a href="services.html" class="btn-ghost">查看服務與價目</a>
     </div>
   </div>
 
@@ -680,18 +981,103 @@
 
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          entry.target.querySelectorAll('.work-item.fade').forEach(el => {
-            el.classList.add('visible');
-          });
-        }
+    /* ── Nav scroll effect ── */
+    const mainNav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* ── Fade-in observer ── */
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
       });
     }, { threshold: 0.08 });
 
-    document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade').forEach(el => fadeObserver.observe(el));
+
+    /* ── Booking panel ── */
+    const trigger  = document.getElementById('bookingTrigger');
+    const overlay  = document.getElementById('bookingOverlay');
+    const panel    = document.getElementById('bookingPanel');
+    const closeBtn = document.getElementById('panelClose');
+    const ctaBtn   = document.getElementById('ctaBookBtn');
+
+    function openPanel(e) {
+      if (e) e.preventDefault();
+      panel.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePanel() {
+      panel.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    trigger.addEventListener('click', openPanel);
+    ctaBtn.addEventListener('click', openPanel);
+    overlay.addEventListener('click', closePanel);
+    closeBtn.addEventListener('click', closePanel);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+    /* ── Radio custom style ── */
+    document.querySelectorAll('.radio-label').forEach(label => {
+      label.addEventListener('click', () => {
+        document.querySelectorAll('.radio-label').forEach(l => l.classList.remove('selected'));
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+      });
+    });
+
+    /* ── Form submit → copy to clipboard → open LINE ── */
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const date  = document.getElementById('bookDate').value;
+      const time  = document.getElementById('bookTime').value;
+      const count = document.getElementById('bookCount').value;
+      const prev  = document.querySelector('input[name="prev"]:checked');
+
+      if (!date || !time || !prev) {
+        showToast('請填寫所有欄位 ✕', true);
+        return;
+      }
+
+      const prevText = prev.value === 'yes' ? '曾經做過' : '尚未做過';
+      const dateObj  = new Date(date);
+      const dateStr  = `${dateObj.getFullYear()}/${dateObj.getMonth()+1}/${dateObj.getDate()}`;
+
+      const msg =
+        `【Oldlace 預約申請】\n` +
+        `日期：${dateStr}\n` +
+        `時段：${time}\n` +
+        `人數：${count} 位\n` +
+        `眉毛經驗：${prevText}\n` +
+        `\n請確認是否有空檔，謝謝 🙏`;
+
+      navigator.clipboard.writeText(msg)
+        .then(() => {
+          showToast('訊息已複製，請在 LINE 貼上發送 ✓');
+          setTimeout(() => {
+            window.open('https://line.me/R/ti/p/@oldlace', '_blank');
+          }, 600);
+        })
+        .catch(() => {
+          window.prompt('請複製以下訊息並貼至 LINE：', msg);
+        });
+    });
+
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.background = isError ? '#6B3A3A' : '';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    /* ── Set min date to today ── */
+    const dateInput = document.getElementById('bookDate');
+    dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
   </script>
 
 </body>

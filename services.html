@@ -1,101 +1,589 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>服務與價目｜Oldlace Beauty 輕透感霧眉・補色</title>
-<meta name="description" content="Oldlace Beauty 服務與價格：輕透感霧眉 NT$9,000、補色 NT$4,500。內含適合對象說明，幫你快速判斷該預約哪一項。">
-<link rel="canonical" href="https://oldlace.tw/services.html">
-<meta property="og:type" content="website">
-<meta property="og:title" content="服務與價目｜Oldlace Beauty 輕透感霧眉">
-<meta property="og:description" content="輕透感霧眉 NT$9,000、補色 NT$4,500，附適合對象說明。">
-<meta property="og:image" content="https://oldlace.tw/assets/brow.jpg">
-<meta property="og:url" content="https://oldlace.tw/services.html">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服務與價目｜Oldlace Beauty 輕透感霧眉・補色</title>
+  <meta name="description" content="Oldlace Beauty 服務與價格：輕透感霧眉 NT$9,000、補色 NT$4,500。內含適合對象說明，幫你快速判斷該預約哪一項。">
+  <link rel="canonical" href="https://oldlace.tw/services.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="服務與價目｜Oldlace Beauty 輕透感霧眉">
+  <meta property="og:description" content="輕透感霧眉 NT$9,000、補色 NT$4,500，附適合對象說明。">
+  <meta property="og:image" content="https://oldlace.tw/assets/brow.jpg">
+  <meta property="og:url" content="https://oldlace.tw/services.html">
+  <meta name="format-detection" content="telephone=no">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #F8F7F5;
+      --text:    #1C1A17;
+      --muted:   #9C9890;
+      --border:  #E2E0DA;
+      --dark:    #1A1916;
+      --dark-mid:#2A2720;
+      --accent:  #8A7E72;
+      --white:   #FEFEFE;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Serif TC', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.9;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: rgba(248,247,245,0.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-logo { text-decoration: none; color: var(--text); }
+
+    .nav-logo-main {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .nav-logo-sub {
+      display: block;
+      font-size: 0.58rem;
+      letter-spacing: 0.38em;
+      color: var(--muted);
+      margin-top: 0.1rem;
+      text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 0.76rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    .nav-book {
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--text);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+
+    .nav-book:hover { opacity: 0.45; }
+
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 14rem 3rem 6rem;
+      max-width: 700px;
+    }
+
+    .page-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.25;
+      letter-spacing: 0.04em;
+    }
+
+
+    /* ── DIVIDER ── */
+    .full-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 3rem;
+    }
+
+
+    /* ── SERVICE BLOCK ── */
+    .service {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 70vh;
+    }
+
+    .service-info {
+      padding: 6rem 3rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .service-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .service-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      line-height: 1.4;
+      margin-bottom: 3rem;
+    }
+
+    .price-block { margin-bottom: 3.5rem; }
+
+    .price-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    .price-currency {
+      font-size: 0.9rem;
+      vertical-align: super;
+      letter-spacing: 0.05em;
+      margin-right: 0.2rem;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .includes {
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .includes-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .includes-desc {
+      font-size: 0.88rem;
+      line-height: 1.9;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.8rem;
+    }
+
+    .includes-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+    }
+
+    .service-image {
+      background: #C0BDB6;
+      background-size: cover;
+      background-position: center;
+      min-height: 50vh;
+    }
+
+
+    /* ── REVISIT BLOCK ── */
+    .revisit {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--border);
+    }
+
+    .revisit-main {
+      padding: 5rem 3rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .revisit-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.6rem;
+    }
+
+    .revisit-cond {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 2.5rem;
+    }
+
+    .revisit-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    .revisit-note {
+      padding: 5rem 3rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .revisit-note p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 2;
+      letter-spacing: 0.06em;
+      max-width: 320px;
+    }
+
+
+    /* ── WHO IS IT FOR ── */
+    .who {
+      border-top: 1px solid var(--border);
+      padding: 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .who-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 3rem;
+      grid-column: 1 / -1;
+    }
+
+    .who-item-title {
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+    }
+
+    .who-item-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.9;
+      letter-spacing: 0.04em;
+    }
+
+
+    /* ── NOTE BAR ── */
+    .note-bar {
+      padding: 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .note-bar-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .note-bar-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+    }
+
+
+    /* ── CTA ── */
+    .page-cta {
+      padding: 8rem 3rem;
+      text-align: center;
+    }
+
+    .page-cta-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+
+    .page-cta-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 3rem;
+    }
+
+    .btn-dark {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: var(--dark-mid);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      transition: background 0.2s;
+    }
+
+    .btn-dark:hover { background: var(--dark); }
+
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-nav { display: flex; gap: 2rem; list-style: none; }
+
+    .footer-nav a {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover { color: var(--text); }
+
+
+    /* ── FADE ── */
+    .fade {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .fade.visible { opacity: 1; transform: translateY(0); }
+
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+
+      .page-header { padding: 10rem 1.5rem 4rem; }
+      .full-rule { margin: 0 1.5rem; }
+
+      .service,
+      .revisit { grid-template-columns: 1fr; }
+
+      .service-info { border-right: none; padding: 4rem 1.5rem; }
+      .service-image { min-height: 55vw; }
+
+      .revisit-main { border-right: none; padding: 3.5rem 1.5rem; }
+      .revisit-note { padding: 0 1.5rem 3.5rem; }
+
+      .who { grid-template-columns: 1fr; padding: 3.5rem 1.5rem; gap: 2rem; }
+
+      .note-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem 1.5rem;
+      }
+
+      .page-cta { padding: 5rem 1.5rem; }
+
+      footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">
-    <span class="nav-logo-main">Oldlace</span>
-    <span class="nav-logo-sub">Beauty Studio</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="services.html">服務與價目</a></li>
-    <li><a href="faq.html">常見問題</a></li>
-    <li><a href="policy.html">預約須知</a></li>
-  </ul>
-  <a href="book.html" class="nav-book">線上預約 →</a>
-</nav>
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-main">Oldlace</span>
+      <span class="nav-logo-sub">Beauty Studio</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="services.html" class="active">服務與價目</a></li>
+      <li><a href="faq.html">常見問題</a></li>
+      <li><a href="policy.html">預約須知</a></li>
+    </ul>
+    <a href="book.html" class="nav-book">線上預約 →</a>
+  </nav>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Services & Pricing</p>
-    <h2 class="serif">服務與價目</h2>
-    <p class="soft">價格已含當次設計與諮詢。看不懂自己適合哪一項？下方有說明，或直接用 LINE 問我。</p>
 
-    <div class="card plain" style="padding:0;border:0">
-      <div class="price">
-        <div><div class="name">輕透感霧眉</div><div class="meta">約 3.5–4 小時・定金 NT$2,000</div></div>
-        <div class="amt">NT$9,000</div>
+  <!-- PAGE HEADER -->
+  <header class="page-header fade">
+    <p class="page-tag">Services &amp; Pricing</p>
+    <h1 class="page-title">
+      服務<br>與價目
+    </h1>
+  </header>
+
+  <hr class="full-rule">
+
+
+  <!-- 主要服務：輕透感霧眉 -->
+  <div class="service fade">
+    <div class="service-info">
+      <p class="service-tag">Signature Service</p>
+      <h2 class="service-name">輕透感霧眉</h2>
+
+      <div class="price-block">
+        <p class="price-label">Price</p>
+        <div class="price-amount">
+          <span class="price-currency">NT$</span>9,000
+        </div>
       </div>
-      <div class="price">
-        <div><div class="name">補色</div><div class="meta">約 2–3 小時・定金 NT$1,000</div></div>
-        <div class="amt">NT$4,500</div>
+
+      <div class="includes">
+        <p class="includes-label">Detail</p>
+        <p class="includes-desc">
+          包含客製化眉型設計與全程施作
+        </p>
+        <p class="includes-note">
+          約 3.5–4 小時・定金 NT$2,000<br>
+          可維持約 1–2 年，依個人代謝而異
+        </p>
       </div>
     </div>
-  </div>
-</section>
 
-<section class="tight" style="background:var(--cream)">
-  <div class="wrap">
-    <p class="eyebrow">Which one</p>
-    <h2 class="serif">你適合哪一項？</h2>
-    <div class="qa"><div class="q">輕透感霧眉</div>
-      <div class="a">第一次做霧眉，或上一次操作已超過 2 年、顏色幾乎全退。</div></div>
-    <div class="qa"><div class="q">補色</div>
-      <div class="a">眉毛是在 Oldlace 做的、且在 2 年以內的舊客。不確定可不可以補色，先用 LINE 傳眉毛素顏照給我評估。</div></div>
-    <div class="qa"><div class="q">在別家做過、有舊印</div>
-      <div class="a">預約前先用 LINE 傳「眉毛素顏照」＋告訴我最後一次操作時間，我評估能不能蓋色後再幫你安排。</div></div>
-  </div>
-</section>
-
-<section class="tight">
-  <div class="wrap">
-    <p class="eyebrow">About the service</p>
-    <h2 class="serif">什麼是輕透感霧眉</h2>
-    <img src="assets/brow.jpg" alt="自然毛流霧眉" style="border-radius:var(--radius);margin:8px 0 14px">
-    <p class="soft">以點狀、毛流的方式，做出像眉粉輕刷過、又帶自然毛感的眉型。操作前會先和你確認臉型、原生眉與日常上妝習慣，溝通好理想眉型後才開始，不會做出生硬尷尬的眉。歡迎帶喜歡的眉型照片一起討論。</p>
-    <p class="soft">維持大約 1～2 年，會依個人代謝自然淡化，後期只需補色即可。</p>
-    <div class="grid" style="margin-top:20px">
-      <img src="assets/operation.jpg" alt="霧眉施術過程" loading="lazy">
-      <img src="assets/operation2.jpg" alt="霧眉施術特寫" loading="lazy">
+    <div class="service-image"
+         style="background-image: url('assets/brow.jpg');">
     </div>
   </div>
-</section>
 
-<section class="cta-band">
-  <div class="wrap">
-    <h2 class="serif">選好項目，來預約吧</h2>
-    <p class="soft">線上選時段，傳送 LINE 即完成。</p>
-    <div class="btns">
-      <a class="btn btn-line" href="book.html">線上預約</a>
-      <a class="btn btn-ghost" href="policy.html">先看預約須知</a>
+
+  <!-- 回訪補色 -->
+  <div class="revisit fade">
+    <div class="revisit-main">
+      <p class="service-tag">Follow-up</p>
+      <h2 class="revisit-name">補色</h2>
+      <p class="revisit-cond">由 Oldlace 施作、2 年內的舊客</p>
+      <div class="revisit-price">
+        <span class="price-currency" style="font-size:0.8rem;">NT$</span>4,500
+      </div>
+    </div>
+    <div class="revisit-note">
+      <p>
+        霧眉約在一至兩年後自然淡化。<br>
+        於 2 年內回訪補色，<br>
+        可維持最佳的飽滿與自然感。<br><br>
+        約 2–3 小時・定金 NT$1,000
+      </p>
     </div>
   </div>
-</section>
 
-<footer>
-  <div class="footer-brand">Oldlace Beauty</div>
-  <ul class="footer-nav">
-    <li><a href="services.html">服務</a></li>
-    <li><a href="faq.html">常見問題</a></li>
-    <li><a href="policy.html">預約須知</a></li>
-    <li><a href="https://line.me/R/ti/p/@oldlace">加入 LINE</a></li>
-  </ul>
-</footer>
+
+  <!-- 適合哪些人 -->
+  <div class="who fade">
+    <p class="who-label">適合哪些人</p>
+    <div>
+      <p class="who-item-title">輕透感霧眉</p>
+      <p class="who-item-desc">第一次做，或上次操作超過 2 年、顏色幾乎全退。</p>
+    </div>
+    <div>
+      <p class="who-item-title">補色</p>
+      <p class="who-item-desc">眉毛是在 Oldlace 做的，且在 2 年以內的舊客。</p>
+    </div>
+    <div>
+      <p class="who-item-title">在別家做過、有舊印</p>
+      <p class="who-item-desc">預約前請先用 LINE 傳素顏照評估，不是每個舊印都適合直接蓋色。</p>
+    </div>
+  </div>
+
+
+  <!-- NOTE -->
+  <div class="note-bar fade">
+    <span class="note-bar-label">Note</span>
+    <p class="note-bar-text">
+      價格已包含完整施作流程，不另收設計費。
+      如有舊紋繡修改需求，請於預約時告知，以便評估是否適合施作。
+    </p>
+  </div>
+
+
+  <!-- CTA -->
+  <div class="page-cta fade">
+    <h2 class="page-cta-title">準備好了嗎</h2>
+    <p class="page-cta-sub">線上選好時段，傳送 LINE 就完成預約。</p>
+    <a href="book.html" class="btn-dark">立即預約</a>
+  </div>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">Oldlace Beauty</div>
+    <ul class="footer-nav">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="faq.html">常見問題</a></li>
+      <li><a href="policy.html">預約須知</a></li>
+      <li><a href="https://line.me/R/ti/p/@oldlace">加入 LINE</a></li>
+    </ul>
+  </footer>
+
+
+  <script>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+  </script>
+
 </body>
 </html>
