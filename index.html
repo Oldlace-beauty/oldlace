@@ -511,17 +511,34 @@
 
       .hero { padding: 3rem 1.5rem; }
 
+      .philosophy {
+        min-height: auto;
+        padding: 3rem 1.5rem;
+      }
+
       .works-item.left,
-      .works-item.right { grid-template-columns: 1fr; }
+      .works-item.right { grid-template-columns: 1fr; min-height: auto; }
 
       .works-item.right .work-img  { order: 1; }
       .works-item.right .work-text { order: 2; }
 
-      .work-text { padding: 3.5rem 1.5rem; }
+      .work-img { min-height: 32vh; }
 
-      .philosophy,
-      .quote-section,
-      .closing { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .work-text { padding: 2rem 1.5rem; }
+
+      .work-num { margin-bottom: 1rem; }
+      .work-title { margin-bottom: 0.8rem; }
+
+      .quote-section {
+        min-height: auto;
+        padding: 3.5rem 1.5rem;
+      }
+
+      .quote-mark-large { margin-bottom: 1rem; }
+
+      .closing { padding: 4rem 1.5rem; }
+
+      .closing-sub { margin-bottom: 2.5rem; }
 
       footer {
         flex-direction: column;
